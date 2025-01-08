@@ -1,0 +1,17 @@
+---
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+# Pour en savoir plus {.backgroundTitre}
+
+## Conseil de lecture
+
+Pour ceux qui veulent aller plus loin :  
+
+- Comment bien utiliser le package `arrow` ? C’est par [ici](https://book.utilitr.org/03_Fiches_thematiques/Fiche_arrow.html)
+- Comment utiliser DuckDB sur des fichiers au format Parquet ? C’est par [là](https://www.icem7.fr/outils/3-explorations-bluffantes-avec-duckdb-1-interroger-des-fichiers-distants/)
+- Comment requêter des fichiers au format Parquet avec Python ? Lien vers la [documentation](https://arrow.apache.org/docs/python/parquet.html).
+
+Note interne écrite par le DEMESIS : voir [ici](https://orion.agriculture/confluence/pages/editpage.action?pageId=1178436103)
