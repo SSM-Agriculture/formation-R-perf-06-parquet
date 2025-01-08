@@ -1,4 +1,4 @@
-# Pourquoi Git ? {.backgroundTitre}
+# C'est quoi un fichier parquet ? {.backgroundTitre}
 
 ## C'est quoi le format Parquet ?
 
