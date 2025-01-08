@@ -1,0 +1,42 @@
+---
+title: "Formation Git et Gitlab"
+subtitle: "Apprendre à utiliser le gestionnaire de versions Git et la forge logicielle Gitlab en tant qu'utilisateur de R et RStudio"
+date: today
+date-format: "DD/MM/YYYY"
+author: "SSP/DEMESIS"
+description: |
+  Support de formation de Git pour les utilisateurs de R au MASAF
+
+slide-tone: false # for blind readers
+chalkboard: false # press the B key to toggle chalkboard
+transition: slide
+fig-cap-location: bottom
+
+toc: true
+toc-title: Sommaire
+toc-depth: 1
+toc-float: true
+
+# multiplex: true
+execute:
+  echo: false
+  warning: false
+  cache: false
+editor:
+  render-on-save: true
+---
+
+## Avant-propos
+
+<br>
+
+Ce support ne couvre pas tous les aspects des traitements qu'il est possible de réaliser avec les fichiers au format Parquet mais il constitue une base sur laquelle s'appuyer si vous rencontrez des fichiers Parquet sur Cerise ou ailleurs.  
+
+
+{{< include 01_baseparquet.qmd >}}
+
+{{< include 02_utilisationparquet.qmd >}}
+
+
+
+

@@ -1,0 +1,24 @@
+/.quarto/
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+
+# Les repertoires suivants
+formation-git_files/
+_output/
+/.quarto/
+/_site/
+/img/excalidraw/
+
+# Les fichiers suivants
+*.html
+!docs/*.html
+*.tex
+*.pdf
+*.log
+*.sty
+*.docx
+*.odt
+PageStandard_Masaf.svg
+!img/com_interne/PageStandard_Masa.svg

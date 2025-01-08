@@ -1,0 +1,39 @@
+# Pourquoi Git ? {.backgroundTitre}
+
+## C'est quoi le format Parquet ?
+
+-   Un nouveau format de données ...
+
+    -   ... qui compresse efficacement les fichiers
+    -   ... interopérable
+    -   conçu pour que les données soient chargées rapidement en mémoire
+
+## Caractéristiques du format Parquet
+
+-   Un stockage au format binaire (pas lisible par un humain)\
+-   Un stockage orienté colonne (par opposition aux csv qui sont orientés lignes)\
+-   Un fichier Parquet contient à la fois les données et des métadonnées
+
+![](img/schema_parquet.png)
+
+## Avantages du format Parquet
+
+- Des fichiers moins volumineux qu’en csv  
+500 Mo en Parquet vs 5 Go en csv  
+
+- Des requêtes plus rapides et efficaces  
+Seulement les données nécessaires sont lues, pas tout le fichier  
+
+- Des données conformes à la mise à disposition par le producteur (par exemple, plus de problème de codes communes…)  
+=> Un format très efficace pour l’analyse de données mais peu adapté à l’ajout de données en continu ou à la modification fréquente de données existantes.  
+
+## Un format qui se démocratise
+
+- L’Insee diffuse des données du [recensement de la population](https://www.insee.fr/fr/statistiques/7637890#consulter-sommaire) au format Parquet  
+
+- Voir [le guide d'utilisation joint](https://ssphub.netlify.app/post/parquetrp/) pour manipuler ces données
+
+- Premières diffusions sur data.gouv avec les bureaux de vote, les demandes de valeurs foncières, indicateurs pénaux…)  
+
+- Prévisualisations des fichiers Parquet possibles avec le nouvel explorateur de données du SSP Cloud ou avec avec l’outil [ParquetViewer](https://github.com/mukunku/ParquetViewer).
+
