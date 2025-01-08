@@ -10,6 +10,7 @@ _output/
 /.quarto/
 /_site/
 /img/excalidraw/
+/data/
 
 # Les fichiers suivants
 *.html
