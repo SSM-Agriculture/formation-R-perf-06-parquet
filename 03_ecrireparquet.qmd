@@ -1,0 +1,9 @@
+---
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+# Ecrire des fichiers parquet {.backgroundTitre}
+
+## En tant que responsable de sources
