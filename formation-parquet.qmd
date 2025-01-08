@@ -39,6 +39,8 @@ Ce support ne couvre pas tous les aspects des traitements qu'il est possible de 
 
 {{< include 03_ecrireparquet.qmd >}}
 
+{{< include 04_bibliographie.qmd >}}
+
 
 
 
