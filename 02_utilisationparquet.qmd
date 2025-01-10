@@ -16,8 +16,8 @@ library(arrow)
 library(tictoc)
 ```
 
-
-Pour l'exemple, nous allons prendre une table d'une centaine de MO qui contient 518 925 lignes et 486 colonnes.
+Pour l'exemple, nous allons prendre une table d'une centaine de MO qui
+contient 518 925 lignes et 486 colonnes.
 
 ```{r}
 #| label: avec_dplyr_parquet
@@ -26,29 +26,38 @@ tic()
 RA2010 <- arrow::read_parquet("data/RA2010_exploitations.parquet")
 toc()
 ```
+
 ## Comparaison avec la lecture d'un fichier rds
 
-Voyons l'écart avec la lecture d'un fichier rds :  
+Voyons l'écart avec la lecture d'un fichier rds :
 
 ```{r}
 #| label: avec_dplyr_rds
-
-tic()
+#| eval: false
 RA2010 <- readRDS("data/RA2010_exploitations.rds")
-toc()
 ```
-L'écart est significatif rien que sur la lecture (X 13) et on n'a pas commencé à manipuler des données !
+
+Le temps nécessaire au chargement de la table est d'environ 32 secondes
+!
+
+L'écart est significatif rien que sur la lecture (X 13) et on n'a pas
+commencé à manipuler des données !
 
 ## Des requêtes avec dplyr comme d'habitude
 
 ```{r}
 #| label: avec_dplyr_requete
 
-tic()
 resultat <- RA2010 %>% 
   filter(region == "93") %>% 
   group_by(dep) %>% 
   summarise(total_SAU = sum(SAU, na.rm = TRUE))
 resultat
-toc()
 ```
+
+## Bilan avec des requêtes avec dplyr
+
+-   Le temps d'exécution de la requête est d'environ 9 secondes.
+-   Les ressources consommées sont importantes
+
+![](img/ressources_dplyr.png){fig-align="center"}
