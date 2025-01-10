@@ -185,7 +185,7 @@ Il est recommandé de privilégier la fonction `open_dataset()` à la fonction `
 
 - `open_dataset()` peut se connecter à un fichier Parquet unique mais aussi à des **fichiers Parquets partitionnés** (voir plus loin)
 
-## L'évalutation/éxécution différée (1/X)
+## L'évalutation/éxécution différée (1/3)
 
 <br> 
 
@@ -199,26 +199,44 @@ Il existe **2 fonctions pour déclencher l’évaluation d’un traitement arrow
 <br>
 Quelle différence ?  
 
-- `collect()` renvoie le résultat du traitement sous la forme d’un **data.frame**  
+- `collect()` renvoie le résultat du traitement sous la forme d’un **data.frame/tibble**  
 - `compute()`  renvoie le résultat du traitement sous la forme d’un **Arrow Table**
 
 ::: callout-important
 Dans les traitements intermédiaires, on privilégiera la fonction `compute()` pour pouvoir utiliser le plus possible le moteur acero.
 :::
 
-## L'évalutation/éxécution différée (1/X)
+## L'évalutation/éxécution différée (1/3)
 
 <br>
 
-Prenons l'exemple suivant :
+Prenons l'exemple pédagogique suivant :
 
 ```{.r}
-RA2010 <- RA2010 |> collect()
+SAU_DEP <- RA2010 |> 
+  group_by(dep) |> 
+  summarise(total_SAU = sum(SAU, na.rm = TRUE))
 
-class(RA2010)
+class(SAU_DEP)
+> [1] "arrow_dplyr_query"
 
-> [1] "data.frame"
+resultats <- SAU_DEP |> 
+  filter(dep == "13") |> 
+  collect()
+  
+> # A tibble: 1 × 2
+  dep   total_SAU
+  <chr>     <dbl>
+1 13     16531479
 ```
+
+
+
+Il est important de comprendre que **la première étape ne réalise aucun calcul par elle-même, car elle ne comprend ni collect() ni compute()**. L’objet `SAU_DEP` n’est pas une table et ne contient pas de données, il contient simplement une requête (query) décrivant les opérations à mener sur la table du RA.
+
+[arrow analyse la requête avant de l’exécuter, et optimise le traitement pour minimiser le travail]{.Macaron2}.  
+Dans notre exemple, arrow repère que la requête ne porte en fait que sur le département 13, et commence donc par filtrer les données sur le département avant de sommer la SAU les équipements, de façon à ne conserver que le minimum de données nécessaires et à ne réaliser que le minimum de calculs. 
+
 
 ## En conclusion sur le package arrow
 
