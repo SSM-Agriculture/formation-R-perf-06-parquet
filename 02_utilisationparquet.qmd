@@ -6,7 +6,7 @@ editor:
 
 # Comment utiliser/interroger un fichier parquet ? {.backgroundTitre}
 
-## Avec dplyr comme d'habitude
+## Lire un fichier avec read_parquet()
 
 ```{r}
 #| label: chargement_packages
@@ -26,6 +26,8 @@ tic()
 RA2010 <- arrow::read_parquet("data/RA2010_exploitations.parquet")
 toc()
 ```
+## Comparaison avec la lecture d'un fichier rds
+
 Voyons l'écart avec la lecture d'un fichier rds :  
 
 ```{r}
@@ -37,4 +39,16 @@ toc()
 ```
 L'écart est significatif rien que sur la lecture (X 13) et on n'a pas commencé à manipuler des données !
 
+## Des requêtes avec dplyr comme d'habitude
 
+```{r}
+#| label: avec_dplyr_requete
+
+tic()
+resultat <- RA2010 %>% 
+  filter(region == "93") %>% 
+  group_by(dep) %>% 
+  summarise(total_SAU = sum(SAU, na.rm = TRUE))
+resultat
+toc()
+```
