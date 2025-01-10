@@ -6,4 +6,48 @@ editor:
 
 # Ecrire des fichiers parquet {.backgroundTitre}
 
-## En tant que responsable de sources
+## Données peu volumineuses: écrire un seul fichier Parquet (1/2)
+
+<br>
+
+En tant que responsable de sources, vous pouvez être amenés à écrire et déposer des fichiers Parquet, par exemple sous Cerise.  
+
+Pour cela, on utilise la fonction `write_parquet()`.  
+Un 1er exemple simple à partir d'un fichier rds:  
+
+```{.r}
+# Lecture du fichier rds
+msa_ns <- readRDS("data/msa_ns_src_2023.rds")
+
+# Écriture des données en format Parquet
+write_parquet(x = msa_ns, sink = "data/msa_ns_src_2023.parquet")
+```
+
+![](img/msa_parquet.png)
+
+## Données peu volumineuses: écrire un seul fichier Parquet (2/2)
+
+<br>
+
+Un autre exemple un peu plus compliqué à partir de fichier csv contenu dans un zip sur internet :
+
+
+```{.r}
+# Chargement des packages
+library(arrow)
+library(readr)
+
+# Téléchargement du fichier zip
+download.file("https://www.insee.fr/fr/statistiques/fichier/2540004/dpt2021_csv.zip", destfile = "data/dpt2021_csv.zip") 
+# Décompression du fichier zip
+unzip("data/dpt2021_csv.zip", exdir = "data")
+
+# Lecture du fichier CSV
+dpt2021 <- read_delim(file = "data/dpt2021.csv")
+
+# Écriture des données en format Parquet
+write_parquet(x = dpt2021, sink = "data/dpt2021.parquet"))
+```
+
+
+
