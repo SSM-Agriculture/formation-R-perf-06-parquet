@@ -166,6 +166,10 @@ RA2010 <- RA2010 |> collect()
 class(RA2010)
 
 > [1] "data.frame"
+
+# L'opération ci-dessus est à éviter pour des tables volumineuses, si besoin de visualiser la table, on préfèrera :
+
+extrait_RA2020 <- RA2010 |> slice_head(n = 100) |> collect()
 ```
 
 <br>
