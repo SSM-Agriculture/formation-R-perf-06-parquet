@@ -52,7 +52,33 @@ dpt2021 <- read_delim(file = "data/dpt2021.csv")
 write_parquet(x = dpt2021, sink = "data/dpt2021.parquet"))
 ```
 
-## Données volumineuses: écrire un fichier Parquet partitionné (1/2)
+
+## Données volumineuses: écrire un fichier Parquet partitionné (1/3)
+
+<br>
+**Pourquoi partitionner ?**
+
+::: columns
+::: {.column width="45%"}
+
+Par définition, il n’est pas possible de charger seulement quelques lignes d’un fichier Parquet : **on importe nécessairement des colonnes entières**.  
+
+Lorsque le fichier Parquet est partitionné, **arrow est capable de filtrer les lignes à importer à l’aide de clés departitionnement**, ce qui permet d’accélérer l’importation des données.  
+
+**Le partitionnement permet de travailler sur des fichiers Parquet de plus petite taille et donc de consommer moins de mémoire vive.**
+
+:::
+
+::: {.column width="55%"}
+
+![](img/predicate_pushdown.png)
+
+:::
+
+::::
+
+
+## Données volumineuses: écrire un fichier Parquet partitionné (2/3)
 
 <br>
 
@@ -68,7 +94,7 @@ Voici par exemple comment se présente un fichier Parquet partitionné selon les
 
 ![](img/fichier_partition.png){fig-align="center"}
 
-## Données volumineuses: écrire un fichier Parquet partitionné (2/2)
+## Données volumineuses: écrire un fichier Parquet partitionné (3/3)
 
 **Pour écrire des fichiers Parquet partitionnés**, on utilise la fonction `write_dataset()`.
 
