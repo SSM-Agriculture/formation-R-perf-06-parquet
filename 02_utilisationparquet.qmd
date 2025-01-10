@@ -185,6 +185,22 @@ Il est recommandé de privilégier la fonction `open_dataset()` à la fonction `
 
 - `open_dataset()` peut se connecter à un fichier Parquet unique mais aussi à des **fichiers Parquets partitionnés** (voir plus loin)
 
+## L'éxécution différée
+
+<br> 
+
+Cela signifie qu’**arrow** se contente de mémoriser les instructions, sans faire aucun calcul tant que l’utilisateur ne le demande pas explicitement.  
+
+Il existe **2 fonctions pour déclencher l’évaluation d’un traitement arrow**: 
+
+- `collect()`  
+- `compute()`.
+
+<br>
+Quelle différence ?  
+
+- `collect()` renvoie le résultat du traitement sous la forme d’un **data.frame / tibble**  
+- `compute()`  renvoie le résultat du traitement sous la forme d’un **Arrow Table**
 
 ## En conclusion sur le package arrow
 
