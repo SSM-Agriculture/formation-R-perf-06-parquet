@@ -95,14 +95,14 @@ Exemple avec une table volumineuse (Recensements Insee 1968-2019, soit 51 millio
 ```{.r}
 # Établir la connexion aux données
 donnees_Ficdep19 <- open_dataset("data/Ficdep19.parquet")  |>
-  filter(DEP_RES_21 == "11") |>
-  group_by(SEXE) |>
-  summarise(total = sum(pond)) |>
+  filter(region == "93") |> 
+  group_by(dep) |> 
+  summarise(total_SAU = sum(SAU, na.rm = TRUE)) |>
   collect()
 ```
 
 => Avec cette syntaxe, la requête va automatiquement utiliser les variables du fichier Parquet dont elle a besoin (en
-l’occurence DEP_RES_21, SEXE et pond) et minimiser l’occupation de la mémoire vive.
+l’occurence region, dep et SAU) et minimiser l’occupation de la mémoire vive.
 
 <br>
 
@@ -185,7 +185,7 @@ Il est recommandé de privilégier la fonction `open_dataset()` à la fonction `
 
 - `open_dataset()` peut se connecter à un fichier Parquet unique mais aussi à des **fichiers Parquets partitionnés** (voir plus loin)
 
-## L'éxécution différée
+## L'évalutation/éxécution différée (1/X)
 
 <br> 
 
@@ -205,6 +205,20 @@ Quelle différence ?
 ::: callout-important
 Dans les traitements intermédiaires, on privilégiera la fonction `compute()` pour pouvoir utiliser le plus possible le moteur acero.
 :::
+
+## L'évalutation/éxécution différée (1/X)
+
+<br>
+
+Prenons l'exemple suivant :
+
+```{.r}
+RA2010 <- RA2010 |> collect()
+
+class(RA2010)
+
+> [1] "data.frame"
+```
 
 ## En conclusion sur le package arrow
 
