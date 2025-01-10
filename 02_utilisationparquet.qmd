@@ -302,6 +302,44 @@ res <- RA2020 |>
 Call collect() first to pull data into R.
 ```
 
+## Comment contourner le problème d'acero ?
+
+<br>
+**Plusieurs solutions existent :**  
+
+1. Comme suggéré par R, renoncer à manipuler les données sous forme d'**Arrow Table** avec le moteur acero en passant par un `collect()` et poursuivre le traitement avec le moteur d'exécution de dplyr.  
+
+
+2. Étudier le message d’erreur renvoyé par R et chercher à réécrire d'une autre façon le traitement.  
+
+*Exemple pour le point 2 issu [d'utilitr](https://book.utilitr.org/) :*  
+
+```{.r}
+resultats <- bpe_ens_2018_arrow |>
+  group_by(DEP) |>
+  summarise(
+    nb_boulangeries  = sum(NB_EQUIP * (TYPEQU == "B203")),
+    nb_poissonneries = sum(NB_EQUIP * (TYPEQU == "B206"))
+  ) |>
+  compute()
+  
+> ! NotImplemented: Function 'multiply_checked' has no kernel matching input types (double, bool); pulling data into R
+```
+
+L’erreur vient de l’opération sum(NB_EQUIP * (TYPEQU == "B203")) : **arrow** ne parvient pas à faire la multiplication entre NB_EQUIP (un nombre réel) et (TYPEQU == "B203") (un booléen).  
+=> La solution est très simple: **il suffit de convertir (TYPEQU == "B203") en nombre entier avec la fonction as.integer() qui est supportée par acero**. Le code suivant peut alors être entièrement exécuté par acero:
+
+```{.r}
+resultats <- bpe_ens_2018_arrow |>
+  group_by(DEP) |>
+  summarise(
+    nb_boulangeries  = sum(NB_EQUIP * as.integer(TYPEQU == "B203")),
+    nb_poissonneries = sum(NB_EQUIP * as.integer(TYPEQU == "B206"))
+  ) |>
+  compute()
+```
+
+
 ## En conclusion sur le package arrow
 
 <br>
