@@ -267,6 +267,36 @@ Malheureusement, **le moteur acero** a ses limites notamment sur des traitements
     - Que le séquencement des étapes soit **cohérent** avec l'objet du traitement
     - Plus les **données sont volumineuses** OU les **opérations unitaires sont complexes**, plus **les étapes de traitement doivent être courtes/prudentes**
 
+## Notions avancées sur le moteur acero
+
+La liste des fonctions du *tidyverse* supportées par acero est disponible [sur cette page](https://arrow.apache.org/docs/dev/r/reference/acero.html).  
+
+Il y a (encore) quelques grands absents, notamment :  
+
+- `pivot_wider()` et `pivot_longer()` n'ont pas d'équivalent avec **acero**. 
+
+- les *window functions* (ajouter à une table des informations issues d'une agrégation par groupe) comme par exemple :  
+
+```{.r}
+res <- RA2010 |>
+  group_by(region) |>
+  mutate(total_SAU = sum(SAU)) |>
+  collect()
+  
+> Error: window functions not currently supported in Arrow
+Call collect() first to pull data into R.
+```
+
+- **les empilements de plusieurs tables avec une seule fonction** (`bind_rows()` dans dplyr).  
+Avec des Arrow Tables, il faut appeler plusieurs foirs ces fonctions (en l'occurence `union()`. Par exemple :  
+
+```{.r}
+resultats <- table1 |>
+  union(table2) |>
+  union(table3) |>
+  compute()
+```
+
 
 
 ## En conclusion sur le package arrow
