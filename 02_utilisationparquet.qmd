@@ -11,9 +11,9 @@ editor:
 <br>
 
 ```{.r}
-library(dplyr)
-library(arrow)
-library(tictoc)
+library(arrow)    # Le package arrow est nécessaire pour travailler avec des fichiers parquet
+library(dplyr)    # Pour utiliser dplyr
+library(tictoc)   # Pour le benchmark
 ```
 <br>
 
@@ -98,9 +98,16 @@ donnees_Ficdep19 <- open_dataset("data/Ficdep19.parquet")  |>
 Avec cette syntaxe, la requête va automatiquement utiliser les variables du fichier Parquet dont elle a besoin (en
 l’occurence DEP_RES_21, SEXE et pond) et minimiser l’occupation de la mémoire vive.
 
-## Quelques remarques avec `open_dataset()`
+[Revenons dans le détail sur cette syntaxe...]{.Macaron2}
 
-Le résultat obtenu avec la fonction `open_dataset()` n'est plus un data.frame mais un Arrow Table qui est une structure de données spécifique.
+## La fonction `open_dataset()` (1/2)
+
+<br>
+
+Comme la fonction `read_parquet()`, la fonction `open_dataset()` permet de lire des données stockées en format Parquet.  
+
+
+Le résultat obtenu avec la fonction `open_dataset()` n'est plus un **data.frame** mais un **Arrow Table** qui est une structure de données spécifique.
 
 ```{.r}
 RA2010 <- open_dataset("data/RA2010_exploitations.parquet")
@@ -109,6 +116,16 @@ class(RA2010)
 
 > [1] "FileSystemDataset" "Dataset" "ArrowObject" "R6" 
 ```
+
+## La fonction `open_dataset()` (2/2)
+
+<br>
+Il est recommandé de privilégier la fonction `open_dataset()` à la fonction `read_parquet()` pour au moins 2 raisons :  
+
+- `open_dataset()` crée une connexion au fichier Parquet mais elle n'importe pas les données contenues dans ce fichier => une consommation de RAM moins importante !  
+
+- `open_dataset()` peut se connecter à un fichier Parquet unique mais aussi à des fichiers Parquets **partitionnés** (voir plus loin)
+
 
 ## En conclusion sur le package arrow
 
