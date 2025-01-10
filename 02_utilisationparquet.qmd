@@ -25,7 +25,7 @@ RA2010 <- arrow::read_parquet("data/RA2010_exploitations.parquet")
 > 2.56 sec elapsed
 ```
 
-Le résultat obtenu est un objet directement utilisable dans R.  
+Le résultat obtenu est un objet directement utilisable dans R (ici un data.frame).  
 
 Il est possible de sélectionner les colonnes que l'on souhaite importer dans R directement dans la fonction `read_parquet` :  
 
@@ -53,28 +53,12 @@ RA2010 <- readRDS("data/RA2010_exploitations.rds")
 - Le temps nécessaire au chargement de la table est d'environ 32 secondes
 !
 <br>
-- L'écart est significatif rien que sur la lecture (X 13) et on n'a pas
-commencé à manipuler des données !
+- L'écart est significatif rien que sur la lecture (X 13).  
 
-## Lire et exploiter un fichier parquet volumineux
-
-Exemple avec une table volumineuse (Recensements Insee 1968-2019, soit 51 millions de lignes et 18 colonnes) , suivre [ce lien](https://gist.github.com/ddotta/acf6add0f2328f077791461ef4f37b84) pour obtenir le code qui permet de générer “Ficdep19.parquet” de façon reproductible) :
-
-```{.r}
-# Établir la connexion aux données
-donnees_Ficdep19 <- open_dataset("Data/Ficdep19.parquet")  |>
-  filter(DEP_RES_21 == "11") |>
-  group_by(SEXE) |>
-  summarise(total = sum(pond)) |>
-  collect()
-```
-
-Avec cette syntaxe, la requête va automatiquement utiliser les variables du fichier Parquet dont elle a besoin (en
-l’occurence DEP_RES_21, SEXE et pond) et minimiser l’occupation de la mémoire vive.
 
 ## Des requêtes avec dplyr comme d'habitude
 
-<br>
+RA2010 est un data.frame : on peut donc utiliser la syntaxe dplyr :
 
 ```{.r}
 resultat <- RA2010 %>% 
@@ -97,3 +81,33 @@ resultat <- RA2010 %>%
 -   Les ressources consommées sont importantes
 
 ![](img/ressources_dplyr.png){fig-align="center"}
+
+## Lire et exploiter un fichier parquet volumineux
+
+Exemple avec une table volumineuse (Recensements Insee 1968-2019, soit 51 millions de lignes et 18 colonnes) , suivre [ce lien](https://gist.github.com/ddotta/acf6add0f2328f077791461ef4f37b84) pour obtenir le code qui permet de générer “Ficdep19.parquet” de façon reproductible) :
+
+```{.r}
+# Établir la connexion aux données
+donnees_Ficdep19 <- open_dataset("data/Ficdep19.parquet")  |>
+  filter(DEP_RES_21 == "11") |>
+  group_by(SEXE) |>
+  summarise(total = sum(pond)) |>
+  collect()
+```
+
+Avec cette syntaxe, la requête va automatiquement utiliser les variables du fichier Parquet dont elle a besoin (en
+l’occurence DEP_RES_21, SEXE et pond) et minimiser l’occupation de la mémoire vive.
+
+## Quelques remarques avec `open_dataset()`
+
+Le résultat obtenu avec la fonction `open_dataset()` n'est plus un data.frame mais un Arrow Table qui est une structure de données spécifique.
+
+```{.r}
+RA2010 <- open_dataset("data/RA2010_exploitations.parquet")
+
+class(RA2010)
+
+> [1] "FileSystemDataset" "Dataset" "ArrowObject" "R6" 
+```
+
+
