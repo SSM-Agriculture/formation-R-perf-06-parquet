@@ -185,7 +185,7 @@ Il est recommandé de privilégier la fonction `open_dataset()` à la fonction `
 
 - `open_dataset()` peut se connecter à un fichier Parquet unique mais aussi à des **fichiers Parquets partitionnés** (voir plus loin)
 
-## L'évalutation/éxécution différée (1/3)
+## L'évalutation/éxécution différée (1/4)
 
 <br> 
 
@@ -206,7 +206,7 @@ Quelle différence ?
 Dans les traitements intermédiaires, on privilégiera la fonction `compute()` pour pouvoir utiliser le plus possible le moteur acero.
 :::
 
-## L'évalutation/éxécution différée (1/3)
+## L'évalutation/éxécution différée (2/4)
 
 <br>
 
@@ -237,10 +237,39 @@ Il est important de comprendre que **la première étape ne réalise aucun calcu
 [arrow analyse la requête avant de l’exécuter, et optimise le traitement pour minimiser le travail]{.Macaron2}.  
 Dans notre exemple, arrow repère que la requête ne porte en fait que sur le département 13, et commence donc par filtrer les données sur le département avant de sommer la SAU les équipements, de façon à ne conserver que le minimum de données nécessaires et à ne réaliser que le minimum de calculs. 
 
+## L'évalutation/éxécution différée (3/4)
+
+<br>
+
+[L'évaluation/exécution différée est très puissante mais **présente des limites**.]{.red}  
+
+On serait tentés d'écrire un traitement entier *en mode lazy* (sans aucun `compute()` ni `collect()` dans les étapes intermédiaires) et de faire un unique `compute()` ou `collect()` tout à la fin du traitement afin que toutes les opérations soient optimisées en une seule étape.  
+
+<br>
+
+Malheureusement, **le moteur acero** a ses limites notamment sur des traitements trop complexes (ce qui génère des plantages de sessions R).
+
+## L'évalutation/éxécution différée (4/4)
+
+<br>
+
+[**QUELQUES CONSEILS POUR ÉLABORER LA BONNE STRATÉGIE AVEC L'ÉVALUATION DIFFÉRÉE :**]{.red}    
+
+<br>
+
+- Décomposer le traitement en plusieurs étapes puis exécuter chaque étape séparément (avec un `compute()`)  
+- Définir la bonne longueur des étapes intermédiaires en gardant en tête :  
+    - D'avoir des étapes de traitement qui **ne dépassent pas 40 lignes de code**
+    - Que le séquencement des étapes soit **cohérent** avec l'objet du traitement
+    - Plus les **données sont volumineuses** OU les **opérations unitaires sont complexes**, plus **les étapes de traitement doivent être courtes/prudentes**
+
+
 
 ## En conclusion sur le package arrow
 
-[Le package arrow présente 3 avantages majeurs :]{.red}
+<br>
+
+[**Le package arrow présente 3 avantages majeurs :**]{.red}
 
 - **Performances élevées** : arrow est très efficace et très rapide pour la manipulation de données tabulaires (nettement plus performant que dplyr par exemple)  
 
