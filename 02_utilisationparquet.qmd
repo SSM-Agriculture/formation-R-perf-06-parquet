@@ -17,12 +17,14 @@ library(tictoc)   # Pour le benchmark
 ```
 <br>
 
-Pour l'exemple, nous allons prendre une table d'une centaine de MO qui
-contient 518 925 lignes et 486 colonnes.
+Pour l'exemple, nous allons prendre une table des eploitations du RA 2020 d'une centaine de MO qui
+contient 416 478 lignes et 255 colonnes.
 
 ```{.r}
-RA2010 <- arrow::read_parquet("data/RA2010_exploitations.parquet")
-> 2.56 sec elapsed
+tic()
+RA2020 <- arrow::read_parquet("data/RA2020_exploitations.parquet")
+toc()
+> 1.14 sec elapsed
 ```
 
 Le résultat obtenu est un objet directement utilisable dans R (ici un data.frame).  
@@ -32,9 +34,11 @@ Il est possible de sélectionner les colonnes que l'on souhaite importer dans R 
 <br>
 
 ```{.r}
-RA2010_extrait <- arrow::read_parquet("data/RA2010_exploitations.parquet",
-                                      col_select = c("ID_DOSSIER","region","SAU"))
-> 0.15 sec elapsed
+tic()
+RA2020_extrait <- arrow::read_parquet("data/RA2020_exploitations.parquet",
+                                      col_select = c("NOM_DOSSIER","SIEGE_REG","SAU_TOT"))
+toc()
+> 0.06 sec elapsed
 ```
 
 
@@ -45,38 +49,40 @@ RA2010_extrait <- arrow::read_parquet("data/RA2010_exploitations.parquet",
 Voyons l'écart avec la lecture d'un fichier rds :
 
 ```{.r}
-RA2010 <- readRDS("data/RA2010_exploitations.rds")
-> 31.83 sec elapsed
+tic()
+RA2020 <- readRDS("data/RA2020_exploitations.rds")
+toc()
+> 6.15 sec elapsed
 ```
 
 <br>
 <br>
 
-- Le temps nécessaire au chargement de la table est d'environ 32 secondes
+- Le temps nécessaire au chargement de la table est d'environ 6 secondes
 !
 <br>
-- L'écart est significatif rien que sur la lecture (X 13).  
+- L'écart est significatif rien que sur la lecture (X 6).  
 
 
 ## Des requêtes avec dplyr comme d'habitude
 
-RA2010 est un data.frame : on peut donc utiliser la syntaxe dplyr :
+RA2020 est un data.frame : on peut donc utiliser la syntaxe dplyr :
 
 ```{.r}
-resultat <- RA2010 |> 
-  filter(region == "93") |> 
-  group_by(dep) |> 
-  summarise(total_SAU = sum(SAU, na.rm = TRUE))
+resultat <- RA2020 |> 
+  filter(SIEGE_REG == "93") |> 
+  group_by(SIEGE_DEP) |> 
+  summarise(total_SAU = sum(SAU_TOT, na.rm = TRUE))
   
 # A tibble: 6 × 2
-  dep   total_SAU
-  <chr>     <dbl>
-1 04     19348882
-2 05     21368858
-3 06      5564296
-4 13     16531479
-5 83      7387106
-6 84     11344215
+  SIEGE_DEP total_SAU
+  <chr>         <dbl>
+1 04          158946.
+2 05           91979.
+3 06           41141.
+4 13          145713.
+5 83           77785.
+6 84          112888.
 ```
 
 -   Le temps d'exécution de la requête est d'environ 9 secondes.
@@ -94,7 +100,7 @@ Exemple avec une table volumineuse (Recensements Insee 1968-2019, soit 51 millio
 
 ```{.r}
 # Établir la connexion aux données
-donnees_Ficdep19 <- open_dataset("data/Ficdep19.parquet")  |>
+donnees_Ficdep19 <- open_dataset("data/RA2020_exploitations.parquet")  |>
   filter(region == "93") |> 
   group_by(dep) |> 
   summarise(total_SAU = sum(SAU, na.rm = TRUE)) |>
@@ -120,9 +126,9 @@ Le résultat obtenu avec la fonction `open_dataset()` n'est plus un **data.frame
 <br>
 
 ```{.r}
-RA2010 <- open_dataset("data/RA2010_exploitations.parquet")
+RA2020 <- open_dataset("data/RA2020_exploitations.parquet")
 
-class(RA2010)
+class(RA2020)
 
 > [1] "FileSystemDataset" "Dataset" "ArrowObject" "R6" 
 ```
@@ -136,21 +142,21 @@ La fonction `open_dataset()` crée un objet qui apparaît dans Values.
 L’affichage dans la console d’un Arrow Table affiche uniquement des métadonnées.
 
 ```{.r}
-RA2010
+RA2020
 
 > FileSystemDataset with 1 Parquet file
-ID_DOSSIER: string
-IDENTIFIANT: string
-DEVINCERTAIN: string
-COLLECTIFFIL: string
-VACANTE: string
-SIEGEREGDEP: string
-SIEGEDEPCOM: string
-region: string
-dep: string
-CHAMP2: string
-CHAMP3: string
-pbstot_07e: double
+NOM_DOSSIER: string
+TYPE_QUESTIONNAIRE: string
+SEUIL_IFS: string
+CHAMP_GEO: string
+COEF_F: double
+NUMSTRATE: string
+STRATE: string
+SIEGENAT: string
+SIEGE_CODE_COM: string
+SIEGE_LIEUDIT: string
+SIEGE_LIEUDIT_CODE_DOM: string
+SIEGE_LIB_COM: string
 ...
 ```
 
@@ -161,15 +167,15 @@ Pour afficher le contenu d’un **Arrow Table**, il faut d’abord le convertir 
 
 
 ```{.r}
-RA2010 <- RA2010 |> collect()
+RA2020 <- RA2020 |> collect()
 
-class(RA2010)
+class(RA2020)
 
 > [1] "data.frame"
 
 # L'opération ci-dessus est à éviter pour des tables volumineuses, si besoin de visualiser la table, on préfèrera :
 
-extrait_RA2020 <- RA2010 |> slice_head(n = 100) |> collect()
+extrait_RA2020 <- RA2020 |> slice_head(n = 100) |> collect()
 ```
 
 <br>
@@ -217,23 +223,22 @@ Dans les traitements intermédiaires, on privilégiera la fonction `compute()` p
 Prenons l'exemple pédagogique suivant :
 
 ```{.r}
-SAU_DEP <- RA2010 |> 
-  group_by(dep) |> 
-  summarise(total_SAU = sum(SAU, na.rm = TRUE))
+SAU_DEP <- RA2020 |> 
+  group_by(SIEGE_DEP) |> 
+  summarise(total_SAU = sum(SAU_TOT, na.rm = TRUE))
 
 class(SAU_DEP)
 > [1] "arrow_dplyr_query"
 
 resultats <- SAU_DEP |> 
-  filter(dep == "13") |> 
+  filter(SIEGE_DEP == "13") |> 
   collect()
   
 > # A tibble: 1 × 2
-  dep   total_SAU
-  <chr>     <dbl>
-1 13     16531479
+  SIEGE_DEP total_SAU
+  <chr>         <dbl>
+1 13          145713.
 ```
-
 
 
 Il est important de comprendre que **la première étape ne réalise aucun calcul par elle-même, car elle ne comprend ni collect() ni compute()**. L’objet `SAU_DEP` n’est pas une table et ne contient pas de données, il contient simplement une requête (query) décrivant les opérations à mener sur la table du RA.
@@ -275,18 +280,6 @@ Il y a (encore) quelques grands absents, notamment :
 
 - `pivot_wider()` et `pivot_longer()` n'ont pas d'équivalent avec **acero**. 
 
-- les *window functions* (ajouter à une table des informations issues d'une agrégation par groupe) comme par exemple :  
-
-```{.r}
-res <- RA2010 |>
-  group_by(region) |>
-  mutate(total_SAU = sum(SAU)) |>
-  collect()
-  
-> Error: window functions not currently supported in Arrow
-Call collect() first to pull data into R.
-```
-
 - **les empilements de plusieurs tables avec une seule fonction** (`bind_rows()` dans dplyr).  
 Avec des Arrow Tables, il faut appeler plusieurs foirs ces fonctions (en l'occurence `union()`. Par exemple :  
 
@@ -297,7 +290,17 @@ resultats <- table1 |>
   compute()
 ```
 
+- les *window functions* (ajouter à une table des informations issues d'une agrégation par groupe) comme par exemple :  
 
+```{.r}
+res <- RA2020 |>
+  group_by(SIEGE_REG) |>
+  mutate(total_SAU = sum(SAU_TOT)) |>
+  collect()
+  
+> Error: window functions not currently supported in Arrow
+Call collect() first to pull data into R.
+```
 
 ## En conclusion sur le package arrow
 
