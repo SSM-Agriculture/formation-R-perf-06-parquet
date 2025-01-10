@@ -25,7 +25,7 @@ RA2010 <- arrow::read_parquet("data/RA2010_exploitations.parquet")
 > 2.56 sec elapsed
 ```
 
-<br>
+Le résultat obtenu est un objet directement utilisable dans R.  
 
 Il est possible de sélectionner les colonnes que l'on souhaite importer dans R directement dans la fonction `read_parquet` :  
 
@@ -55,6 +55,22 @@ RA2010 <- readRDS("data/RA2010_exploitations.rds")
 <br>
 - L'écart est significatif rien que sur la lecture (X 13) et on n'a pas
 commencé à manipuler des données !
+
+## Lire et exploiter un fichier parquet volumineux
+
+Exemple avec une table volumineuse (Recensements Insee 1968-2019, soit 51 millions de lignes et 18 colonnes) , suivre [ce lien](https://gist.github.com/ddotta/acf6add0f2328f077791461ef4f37b84) pour obtenir le code qui permet de générer “Ficdep19.parquet” de façon reproductible) :
+
+```{.r}
+# Établir la connexion aux données
+donnees_Ficdep19 <- open_dataset("Data/Ficdep19.parquet")  |>
+  filter(DEP_RES_21 == "11") |>
+  group_by(SEXE) |>
+  summarise(total = sum(pond)) |>
+  collect()
+```
+
+Avec cette syntaxe, la requête va automatiquement utiliser les variables du fichier Parquet dont elle a besoin (en
+l’occurence DEP_RES_21, SEXE et pond) et minimiser l’occupation de la mémoire vive.
 
 ## Des requêtes avec dplyr comme d'habitude
 
