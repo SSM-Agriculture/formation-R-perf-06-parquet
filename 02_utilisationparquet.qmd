@@ -199,7 +199,7 @@ Il existe **2 fonctions pour déclencher l’évaluation d’un traitement arrow
 <br>
 Quelle différence ?  
 
-- `collect()` renvoie le résultat du traitement sous la forme d’un **data.frame / tibble**  
+- `collect()` renvoie le résultat du traitement sous la forme d’un **data.frame**  
 - `compute()`  renvoie le résultat du traitement sous la forme d’un **Arrow Table**
 
 ## En conclusion sur le package arrow
