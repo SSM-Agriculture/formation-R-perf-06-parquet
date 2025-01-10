@@ -23,6 +23,8 @@ msa_ns <- readRDS("data/msa_ns_src_2023.rds")
 write_parquet(x = msa_ns, sink = "data/msa_ns_src_2023.parquet")
 ```
 
+<br>
+
 ![](img/msa_parquet.png)
 
 ## Données peu volumineuses: écrire un seul fichier Parquet (2/2)
@@ -31,6 +33,7 @@ write_parquet(x = msa_ns, sink = "data/msa_ns_src_2023.parquet")
 
 Un autre exemple un peu plus compliqué à partir de fichier csv contenu dans un zip sur internet :
 
+<br>
 
 ```{.r}
 # Chargement des packages
@@ -49,5 +52,57 @@ dpt2021 <- read_delim(file = "data/dpt2021.csv")
 write_parquet(x = dpt2021, sink = "data/dpt2021.parquet"))
 ```
 
+## Données volumineuses: écrire un fichier Parquet partitionné (1/2)
+
+<br>
+
+Ça veut dire quoi partitionné ?  
 
 
+<p style="text-align: center;">[Partitionner un fichier revient à le “découper” selon une clé de partionnement (une ou plusieurs variables)]{.Macaron2}</p>
+
+
+En pratique, l’ensemble des données sera stockée dans plusieurs fichiers au format Parquet.
+
+Voici par exemple comment se présente un fichier Parquet partitionné selon les régions : 
+
+![](img/fichier_partition.png){fig-align="center"}
+
+## Données volumineuses: écrire un fichier Parquet partitionné (2/2)
+
+**Pour écrire des fichiers Parquet partitionnés**, on utilise la fonction `write_dataset()`.
+
+**Partitionnons** notre fichier issu de la MSA **par type d'exploitation et sexe** :  
+
+
+```{.r}
+write_dataset(
+  dataset = msa_ns,
+  path = "data/msa_ns",
+  partitioning = c("TYPE_EXP","SEXE"), # les variables de partitionnement
+  format = "parquet"
+)
+```
+
+Voici un aperçu de l'arborescence créée (:  
+
+```{.r}
+data/msa_ns
+├── TYPE_EXP=1
+│   ├── SEXE=1
+│   │   └── part-0.parquet
+│   └── SEXE=2
+│       └── part-0.parquet
+├── TYPE_EXP=2
+│   ├── SEXE=1
+│   │   └── part-0.parquet
+│   └── SEXE=2
+│       └── part-0.parquet
+└── TYPE_EXP=3
+    ├── SEXE=1
+    │   └── part-0.parquet
+    └── SEXE=2
+        └── part-0.parquet
+        
+        
+```
