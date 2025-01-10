@@ -106,3 +106,31 @@ data/msa_ns
         
         
 ```
+
+## Industrialiser la conversion de vos fichiers ?
+
+- Le package R [parquetize](https://ddotta.github.io/parquetize/) permet de faciliter la conversion de données au format Parquet.  
+
+- Plusieurs formats supportés csv, json, rds, fst, SAS, SPSS, Stata, sqlite…  
+
+- Propose des [solutions de contournement](https://ddotta.github.io/parquetize/articles/aa-conversions.html) pour les fichiers très volumineux.
+
+Un exemple issu de la documentation :  
+
+```{.r}
+Conversion from a local rds file to a partitioned parquet file :: 12
+rds_to_parquet(
+path_to_file = system.file("extdata","iris.rds",package = "parquetize"),
+path_to_parquet = tempfile(fileext = ".parquet"),
+partition = "yes",
+partitioning = c("Species")
+)
+
+#> Reading data...
+#> Writing data...
+#> ✔ Data are available in parquet dataset under /tmp/RtmptNiaDm/file1897441ca0c0.parquet
+#> Writing data...
+
+#> Reading data...
+```
+
