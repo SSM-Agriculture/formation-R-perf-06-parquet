@@ -61,9 +61,9 @@ RA2010 <- readRDS("data/RA2010_exploitations.rds")
 RA2010 est un data.frame : on peut donc utiliser la syntaxe dplyr :
 
 ```{.r}
-resultat <- RA2010 %>% 
-  filter(region == "93") %>% 
-  group_by(dep) %>% 
+resultat <- RA2010 |> 
+  filter(region == "93") |> 
+  group_by(dep) |> 
   summarise(total_SAU = sum(SAU, na.rm = TRUE))
   
 # A tibble: 6 × 2
@@ -100,7 +100,7 @@ l’occurence DEP_RES_21, SEXE et pond) et minimiser l’occupation de la mémoi
 
 [Revenons dans le détail sur cette syntaxe...]{.Macaron2}
 
-## La fonction `open_dataset()` (1/3)
+## La fonction `open_dataset()` (1/4)
 
 <br>
 
@@ -117,7 +117,7 @@ class(RA2010)
 > [1] "FileSystemDataset" "Dataset" "ArrowObject" "R6" 
 ```
 
-## La fonction `open_dataset()` (2/3)
+## La fonction `open_dataset()` (2/4)
 
 La fonction `open_dataset()` crée un objet qui apparaît dans Values. 
 
@@ -144,7 +144,27 @@ pbstot_07e: double
 ...
 ```
 
-## La fonction `open_dataset()` (3/3)
+
+## La fonction `open_dataset()` (3/4)
+
+Pour afficher le contenu d’un **Arrow Table**, il faut d’abord le convertir en tibble avec la fonction `collect()`. 
+
+
+```{.r}
+RA2010 <- RA2010 |> collect()
+
+class(RA2010)
+
+> [1] "data.frame"
+```
+
+Toutefois **rien ne presse** car la grande différence entre manipuler un data.frame et un Arrow Table tient **au moteur d’exécution** : 
+
+- Si on manipule un data.frame avec la syntaxe de dplyr, alors c’est le moteur d’exécution de dplyr qui fait les calculs {{< fa person-biking >}}
+
+- Si on manipule un Arrow Table avec la syntaxe de dplyr, alors c’est le moteur d’exécution d’arrow (nommé **acero**) qui fait les calculs. Et le moteur d’exécution d’arrow est beaucoup plus efficace et rapide {{< fa jet-fighter >}}
+
+## La fonction `open_dataset()` (4/4)
 
 <br>
 Il est recommandé de privilégier la fonction `open_dataset()` à la fonction `read_parquet()` pour au moins 2 raisons :  
