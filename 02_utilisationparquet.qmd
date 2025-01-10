@@ -202,6 +202,10 @@ Quelle différence ?
 - `collect()` renvoie le résultat du traitement sous la forme d’un **data.frame**  
 - `compute()`  renvoie le résultat du traitement sous la forme d’un **Arrow Table**
 
+::: callout-important
+Dans les traitements intermédiaires, on privilégiera la fonction `compute()` pour pouvoir utiliser le plus possible le moteur acero.
+:::
+
 ## En conclusion sur le package arrow
 
 [Le package arrow présente 3 avantages majeurs :]{.red}
