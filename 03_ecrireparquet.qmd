@@ -160,3 +160,56 @@ partitioning = c("Species")
 #> Reading data...
 ```
 
+## Comment bien utiliser des fichiers partitionnés avec arrow (1/2)
+
+<br>
+
+La fonction `open_dataset()` permet **d’ouvrir une connexion vers un fichier Parquet partitionné**.  
+
+L’utilisation de la fonction `open_dataset()` est **similaire au cas dans lequel on travaille avec un seul fichier Parquet**.
+
+[Il y a toutefois 2 différences :]{.red}  
+
+- Le chemin indiqué n’est pas celui d’un fichier .parquet, mais <u>le chemin d’un répertoire</u> dans lequel se trouve le
+fichier Parquet partitionné
+Il est préférable </u>d’indiquer le nom et le type de la ou des variable(s) de partitionnement</u>.
+
+## Comment bien utiliser des fichiers partitionnés avec arrow (2/2)
+
+<br>
+
+Un exemple avec les données de la MSA :
+
+```{.r}
+# Établir la connexion au fichier Parquet partitionné
+donnees_msa <- open_dataset(
+"data/msa_ns", # Ici, on met le chemin d'un répertoire
+hive_style = TRUE,
+partitioning = arrow::schema(TYPE_EXP = arrow::utf8(), SEXE = arrow::utf8()) # Les variables de partitionnement
+)
+
+# Définir la requête
+resultats_msa <- donnees_msa |>
+  filter(TYPE_EXP == "2" & SEXE == "1") |> # Ici, on filtre selon les clés de partitionnement
+  select(DEPT, RC_CHEF) |> 
+  collect()
+```
+
+Ce qui donne : 
+
+```{.r}
+resultats_msa
+
+> resultats_msa
+# A tibble: 62,195 × 2
+   DEPT  RC_CHEF
+ * <chr> <chr>  
+ 1 11    1461   
+ 2 11    2910   
+ 3 11    1528   
+ 4 11    4493   
+ 5 11    1490   
+# ℹ 62,185 more rows
+# ℹ Use `print(n = ...)` to see more rows
+```
+
