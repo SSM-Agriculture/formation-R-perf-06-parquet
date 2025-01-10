@@ -110,4 +110,17 @@ class(RA2010)
 > [1] "FileSystemDataset" "Dataset" "ArrowObject" "R6" 
 ```
 
+## En conclusion sur le package arrow
+
+Le package arrow présente 3 avantages majeurs :
+
+- Performances élevées: arrow est très efficace et très rapide pour la manipulation de données tabulaires (nettement plus performant que dplyr par exemple)  
+
+- Usage réduit des ressources: arrow est conçu pour ne charger en mémoire que le minimum de données. Cela permet de réduire considérablement les besoins en mémoire, même lorsque les données sont volumineuses  
+
+- Facilité d’apprentissage grâce aux approches dplyr et SQL: arrow peut être utilisé avec les verbes de dplyr (select, mutate, etc.) et/ou avec le langage SQL grâce à DuckDB.
+
+
+
+
 
