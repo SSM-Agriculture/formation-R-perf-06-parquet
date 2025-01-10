@@ -37,9 +37,11 @@ Ce support ne couvre pas tous les aspects des traitements qu'il est possible de 
 
 {{< include 02_utilisationparquet.qmd >}}
 
-{{< include 03_ecrireparquet.qmd >}}
+{{< include 03_parquetduckdb.qmd >}}
 
-{{< include 04_bibliographie.qmd >}}
+{{< include 04_ecrireparquet.qmd >}}
+
+{{< include 05_bibliographie.qmd >}}
 
 
 
