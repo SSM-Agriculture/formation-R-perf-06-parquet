@@ -8,54 +8,74 @@ editor:
 
 ## Lire un fichier avec read_parquet()
 
-```{r}
-#| label: chargement_packages
-#| message: false
+<br>
+
+```{.r}
 library(dplyr)
 library(arrow)
 library(tictoc)
 ```
+<br>
 
 Pour l'exemple, nous allons prendre une table d'une centaine de MO qui
 contient 518 925 lignes et 486 colonnes.
 
-```{r}
-#| label: avec_dplyr_parquet
-
-tic()
+```{.r}
 RA2010 <- arrow::read_parquet("data/RA2010_exploitations.parquet")
-toc()
+> 2.56 sec elapsed
 ```
+
+<br>
+
+Il est possible de sélectionner les colonnes que l'on souhaite importer dans R directement dans la fonction `read_parquet` :  
+
+```{.r}
+RA2010_extrait <- arrow::read_parquet("data/RA2010_exploitations.parquet",
+                                      col_select = c("ID_DOSSIER","region","SAU"))
+> 0.15 sec elapsed
+```
+
 
 ## Comparaison avec la lecture d'un fichier rds
 
+<br>
+
 Voyons l'écart avec la lecture d'un fichier rds :
 
-```{r}
-#| label: avec_dplyr_rds
-#| eval: false
+```{.r}
 RA2010 <- readRDS("data/RA2010_exploitations.rds")
+> 31.83 sec elapsed
 ```
 
-Le temps nécessaire au chargement de la table est d'environ 32 secondes
-!
+<br>
+<br>
 
-L'écart est significatif rien que sur la lecture (X 13) et on n'a pas
+- Le temps nécessaire au chargement de la table est d'environ 32 secondes
+!
+<br>
+- L'écart est significatif rien que sur la lecture (X 13) et on n'a pas
 commencé à manipuler des données !
 
 ## Des requêtes avec dplyr comme d'habitude
 
-```{r}
-#| label: avec_dplyr_requete
+<br>
 
+```{.r}
 resultat <- RA2010 %>% 
   filter(region == "93") %>% 
   group_by(dep) %>% 
   summarise(total_SAU = sum(SAU, na.rm = TRUE))
-resultat
+  
+# A tibble: 6 × 2
+  dep   total_SAU
+  <chr>     <dbl>
+1 04     19348882
+2 05     21368858
+3 06      5564296
+4 13     16531479
+5 83      7387106
+6 84     11344215
 ```
-
-## Bilan avec des requêtes avec dplyr
 
 -   Le temps d'exécution de la requête est d'environ 9 secondes.
 -   Les ressources consommées sont importantes
