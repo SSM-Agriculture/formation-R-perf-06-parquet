@@ -25,7 +25,7 @@
 Seulement les données nécessaires sont lues, pas tout le fichier  
 
 - Des données conformes à la mise à disposition par le producteur (par exemple, plus de problème de codes communes…)  
-=> Un format **très efficace pour l’analyse de données** mais **peu adapté à l’ajout de données en continu** ou à la modification fréquente de données existantes.  
+=> Un format **très efficace pour l’analyse de données** mais **peu adapté à l’ajout de données en continu** ou **à la modification fréquente de données existantes**.  
 
 ## Un format qui se démocratise
 

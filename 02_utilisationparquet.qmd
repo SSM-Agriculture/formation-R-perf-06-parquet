@@ -31,8 +31,6 @@ Le résultat obtenu est un objet directement utilisable dans R (ici un data.fram
 
 Il est possible de sélectionner les colonnes que l'on souhaite importer dans R directement dans la fonction `read_parquet` :  
 
-<br>
-
 ```{.r}
 tic()
 RA2020_extrait <- arrow::read_parquet("data/RA2020_exploitations.parquet",
@@ -58,10 +56,10 @@ toc()
 <br>
 <br>
 
-- Le temps nécessaire au chargement de la table est d'environ 6 secondes
+=> Le temps nécessaire au chargement de la table est d'environ 6 secondes
 !
 <br>
-- L'écart est significatif rien que sur la lecture (X 6).  
+L'écart est significatif rien que sur la lecture (X 6).  
 
 
 ## Des requêtes avec dplyr comme d'habitude
@@ -94,21 +92,21 @@ resultat <- RA2020 |>
 
 <br>
 
-Exemple avec une table volumineuse (Recensements Insee 1968-2019, soit 51 millions de lignes et 18 colonnes), suivre [ce lien](https://gist.github.com/ddotta/acf6add0f2328f077791461ef4f37b84) pour obtenir le code qui permet de générer “Ficdep19.parquet” de façon reproductible) :
+Voici ci-dessous la syntaxe recommandée pour requêter un fichier parquet volumineux : 
 
 <br>
 
 ```{.r}
 # Établir la connexion aux données
-donnees_Ficdep19 <- open_dataset("data/RA2020_exploitations.parquet")  |>
-  filter(region == "93") |> 
-  group_by(dep) |> 
-  summarise(total_SAU = sum(SAU, na.rm = TRUE)) |>
+RA2020 <- open_dataset("data/RA2020_exploitations.parquet")  |>
+  filter(SIEGE_REG == "93") |> 
+  group_by(SIEGE_DEP) |> 
+  summarise(total_SAU = sum(SAU_TOT, na.rm = TRUE)) |> 
   collect()
 ```
 
 => Avec cette syntaxe, la requête va automatiquement utiliser les variables du fichier Parquet dont elle a besoin (en
-l’occurence region, dep et SAU) et minimiser l’occupation de la mémoire vive.
+l’occurence SIEGE_REG, SIEGE_DEP et SAU_TOT) et minimiser l’occupation de la mémoire vive.
 
 <br>
 
