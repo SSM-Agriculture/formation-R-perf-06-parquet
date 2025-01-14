@@ -183,9 +183,9 @@ Un exemple avec les données de la MSA :
 ```{.r}
 # Établir la connexion au fichier Parquet partitionné
 donnees_msa <- open_dataset(
-"data/msa_ns", # Ici, on met le chemin d'un répertoire
-hive_style = TRUE,
-partitioning = arrow::schema(TYPE_EXP = arrow::utf8(), SEXE = arrow::utf8()) # Les variables de partitionnement
+  "data/msa_ns", # Ici, on met le chemin d'un répertoire
+  hive_style = TRUE,
+  partitioning = arrow::schema(TYPE_EXP = arrow::utf8(), SEXE = arrow::utf8()) # Les variables de   partitionnement
 )
 
 # Définir la requête
@@ -213,3 +213,15 @@ resultats_msa
 # ℹ Use `print(n = ...)` to see more rows
 ```
 
+## Conseils lors de l'utilisation de fichiers partitionnés
+
+Afin de tirer au mieux profit du partitionnement, il est conseillé de **filtrer les données de préférence selon les variables de partitionnement** (dans notre exemple, `TYP_EXP` et `SEXE`).  
+
+Il est fortement recommandé de **spécifier le type des variables de partitionnement avec l’argument
+partitioning**.  
+
+Cela évite des erreurs typiques: le code du département est interprété à tort comme un nombre et aboutit à une erreur à cause de la Corse...  
+
+L’argument `partitioning` s’utilise en construisant un schéma qui précise le type de chacune des variables de partitionnement.   
+
+Voir [cette page](https://arrow.apache.org/docs/r/reference/data-type.html) pour la liste des types supportés.
