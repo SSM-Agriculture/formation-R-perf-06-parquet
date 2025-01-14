@@ -4,6 +4,6 @@ editor:
     wrap: 72
 ---
 
-# Ecrire des fichiers parquet {.backgroundTitre}
+# Manipuler des fichiers parquets avec duckdb {.backgroundTitre}
 
 ## En tant que responsable de sources

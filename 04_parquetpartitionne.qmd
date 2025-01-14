@@ -4,6 +4,6 @@ editor:
     wrap: 72
 ---
 
-# Les fichiers parquet partitionné {.backgroundTitre}
+# Les fichiers parquet partitionnés {.backgroundTitre}
 
 ## En tant que responsable de sources
