@@ -1,11 +1,11 @@
 ---
-title: "Formation Git et Gitlab"
-subtitle: "Apprendre à utiliser le gestionnaire de versions Git et la forge logicielle Gitlab en tant qu'utilisateur de R et RStudio"
+title: "Module format Parquet"
+subtitle: "Apprendre à utiliser des fichiers au format Parquet avec R"
 date: today
 date-format: "DD/MM/YYYY"
 author: "SSP/DEMESIS"
 description: |
-  Support de formation de Git pour les utilisateurs de R au MASAF
+  Support de formation R pour le module parquet au MASAF
 
 slide-tone: false # for blind readers
 chalkboard: false # press the B key to toggle chalkboard
