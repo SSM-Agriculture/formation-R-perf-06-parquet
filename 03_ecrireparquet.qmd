@@ -225,3 +225,18 @@ Cela évite des erreurs typiques: le code du département est interprété à to
 L’argument `partitioning` s’utilise en construisant un schéma qui précise le type de chacune des variables de partitionnement.   
 
 Voir [cette page](https://arrow.apache.org/docs/r/reference/data-type.html) pour la liste des types supportés.
+
+## Dernier conseil avec `arrow`
+
+Il est recommandé de définir les deux options suivantes au début de votre script.  
+
+Cela autorise arrow à utiliser plusieurs processeurs à la fois, ce qui accélère les traitements :  
+
+```{.r}
+Autoriser arrow à utiliser plusieurs processeurs en même temps
+options(arrow.use_threads = TRUE)
+
+# Définir le nombre de processeurs utilisés par arrow
+# 10 processeurs sont suffisants dans la plupart des cas
+arrow:::set_cpu_count(parallel::detectCores() %/% 2)
+```
