@@ -33,7 +33,7 @@ Seulement les données nécessaires sont lues, pas tout le fichier
 
 - Voir [le guide d'utilisation joint](https://ssphub.netlify.app/post/parquetrp/) pour manipuler ces données
 
-- Premières diffusions sur data.gouv avec les bureaux de vote, les demandes de valeurs foncières, indicateurs pénaux…)  
+- Premières diffusions sur [data.gouv](https://www.data.gouv.fr/fr/) avec les bureaux de vote, les demandes de valeurs foncières, indicateurs pénaux…)  
 
 - Prévisualisations des fichiers Parquet possibles avec le nouvel explorateur de données du SSP Cloud ou avec avec l’outil [ParquetViewer](https://github.com/mukunku/ParquetViewer).
 
