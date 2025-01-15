@@ -313,6 +313,8 @@ Call collect() first to pull data into R.
 
 ## Comment contourner le problème d'acero ? (2/3)
 
+<br>
+
 *Exemple pour le point 2 issu [d'utilitr](https://book.utilitr.org/) :*  
 
 ```{.r}
@@ -330,6 +332,8 @@ resultats <- bpe_ens_2018_arrow |>
 L’erreur vient de l’opération sum(NB_EQUIP * (TYPEQU == "B203")) : **arrow** ne parvient pas à faire la multiplication entre NB_EQUIP (un nombre réel) et (TYPEQU == "B203") (un booléen).  
 
 ## Comment contourner le problème d'acero ? (3/3)
+
+<br>
 
 => La solution est très simple: **il suffit de convertir (TYPEQU == "B203") en nombre entier avec la fonction as.integer() qui est supportée par acero**. Le code suivant peut alors être entièrement exécuté par acero:
 
