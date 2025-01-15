@@ -364,7 +364,7 @@ resultats <- bpe_ens_2018_arrow |>
 
 - **Usage réduit des ressources** : arrow est conçu pour ne charger en mémoire que le minimum de données. Cela permet de réduire considérablement les besoins en mémoire, même lorsque les données sont volumineuses  
 
-- **Facilité d’apprentissage grâce aux approches dplyr et SQL**: arrow peut être utilisé avec les verbes de dplyr (select, mutate, etc.) et/ou avec le langage SQL grâce à DuckDB.
+- **Facilité d’apprentissage grâce aux approches dplyr et SQL**: arrow peut être utilisé avec les verbes de dplyr (select, mutate, etc.) et/ou avec le langage SQL grâce à DuckDB (voir plus loin).
 
 
 
