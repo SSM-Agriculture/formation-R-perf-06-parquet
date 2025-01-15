@@ -137,7 +137,7 @@ La fonction `open_dataset()` crée un objet qui apparaît dans Values.
 
 ![](img/vue_values.png){fig-align="center"}
 
-L’affichage dans la console d’un Arrow Table affiche uniquement des métadonnées.
+L’affichage dans la console d’un Arrow Table affiche uniquement les métadonnées.
 
 ```{.r}
 RA2020
@@ -161,7 +161,7 @@ SIEGE_LIB_COM: string
 
 ## La fonction `open_dataset()` (3/4)
 
-Pour afficher le contenu d’un **Arrow Table**, il faut d’abord le convertir en tibble avec la fonction `collect()`. 
+Pour afficher le contenu d’un **Arrow Table**, il faut d’abord le convertir en data.frame avec la fonction `collect()`. 
 
 
 ```{.r}
@@ -180,9 +180,9 @@ extrait_RA2020 <- RA2020 |> slice_head(n = 100) |> collect()
 
 Toutefois **rien ne presse** car la grande différence entre manipuler un data.frame et un Arrow Table tient **au moteur d’exécution** : 
 
-- Si on manipule un data.frame avec la syntaxe de dplyr, alors c’est le **moteur d’exécution de dplyr** qui fait les calculs {{< fa person-biking >}}
+- Si on manipule un data.frame avec la syntaxe de dplyr, alors c’est le **moteur d’exécution de dplyr** qui fait les calculs  {{< fa person-biking >}}
 
-- Si on manipule un Arrow Table avec la syntaxe de dplyr, alors c’est le **moteur d’exécution d’arrow** (nommé **acero**) qui fait les calculs. Et le moteur d’exécution d’arrow est beaucoup plus efficace et rapide {{< fa jet-fighter >}}
+- Si on manipule un Arrow Table avec la syntaxe de dplyr, alors c’est le **moteur d’exécution d’arrow** (nommé **acero**) qui fait les calculs. Et le moteur d’exécution d’arrow est beaucoup plus efficace et rapide  {{< fa jet-fighter >}}
 
 ## La fonction `open_dataset()` (4/4)
 
@@ -199,39 +199,31 @@ Il est recommandé de privilégier la fonction `open_dataset()` à la fonction `
 
 Cela signifie qu’**arrow** se contente de mémoriser les instructions, sans faire aucun calcul tant que l’utilisateur ne le demande pas explicitement.  
 
-Il existe **2 fonctions pour déclencher l’évaluation d’un traitement arrow**: 
+Il existe **2 fonctions pour déclencher l’évaluation d’un traitement arrow** mais qui présente des différences : 
 
-- `collect()`  
-- `compute()`.
+- `collect()` qui renvoie le résultat du traitement sous la forme d’un **data.frame/tibble**  
+- `compute()` qui renvoie le résultat du traitement sous la forme d’un **Arrow Table**.
 
-<br>
-Quelle différence ?  
 
-- `collect()` renvoie le résultat du traitement sous la forme d’un **data.frame/tibble**  
-- `compute()`  renvoie le résultat du traitement sous la forme d’un **Arrow Table**
+**La grande différence entre manipuler un tibble et manipuler un Arrow Table tient au <u> moteur d’exécution </u> ** :  
 
-::: callout-important
-Dans les traitements intermédiaires, on privilégiera la fonction `compute()` pour pouvoir utiliser le plus possible le moteur acero.
-:::
+- Avec un **data.frame/tibble** => <u>moteur d'exécution de dplyr</u>  
+- Avec un  **Arrow Table** => <u>moteur d’exécution d’arrow (nommé acero)</u>  plus efficace que celui de dplyr  
+
+[**Dans les traitements intermédiaires, on privilégiera la fonction `compute()` pour pouvoir utiliser le plus possible le moteur acero.**]{.red}
 
 ## L'évalutation/éxécution différée (2/4)
-
-<br>
-
-Prenons l'exemple pédagogique suivant :
 
 ```{.r}
 SAU_DEP <- RA2020 |> 
   group_by(SIEGE_DEP) |> 
   summarise(total_SAU = sum(SAU_TOT, na.rm = TRUE))
-
 class(SAU_DEP)
 > [1] "arrow_dplyr_query"
 
 resultats <- SAU_DEP |> 
   filter(SIEGE_DEP == "13") |> 
   collect()
-  
 > # A tibble: 1 × 2
   SIEGE_DEP total_SAU
   <chr>         <dbl>
@@ -239,10 +231,10 @@ resultats <- SAU_DEP |>
 ```
 
 
-Il est important de comprendre que **la première étape ne réalise aucun calcul par elle-même, car elle ne comprend ni collect() ni compute()**. L’objet `SAU_DEP` n’est pas une table et ne contient pas de données, il contient simplement une requête (query) décrivant les opérations à mener sur la table du RA.
+Dans l'exemple ci-dessus, **la première étape ne réalise aucun calcul par elle-même, car elle ne comprend ni collect() ni compute()**. <u>L’objet `SAU_DEP` n’est pas une table et ne contient pas de données</u>, il contient simplement une requête (query) décrivant les opérations à mener sur la table du RA.
 
-[arrow analyse la requête avant de l’exécuter, et optimise le traitement pour minimiser le travail]{.Macaron2}.  
-Dans notre exemple, arrow repère que la requête ne porte en fait que sur le département 13, et commence donc par filtrer les données sur le département avant de sommer la SAU les équipements, de façon à ne conserver que le minimum de données nécessaires et à ne réaliser que le minimum de calculs. 
+[arrow analyse la requête avant de l’exécuter, et optimise le traitement pour minimiser le travail.]{.Macaron2}  
+[Dans notre exemple, arrow repère que la requête ne porte en fait que sur le département 13, et commence donc par filtrer les données sur le département avant de sommer la SAU les équipements, de façon à ne conserver que le minimum de données nécessaires et à ne réaliser que le minimum de calculs.]{.small} 
 
 ## L'évalutation/éxécution différée (3/4)
 
