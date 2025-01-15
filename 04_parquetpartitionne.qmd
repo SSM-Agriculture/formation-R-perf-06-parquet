@@ -1,9 +1,0 @@
----
-editor: 
-  markdown: 
-    wrap: 72
----
-
-# Les fichiers parquet partitionnés {.backgroundTitre}
-
-## En tant que responsable de sources
