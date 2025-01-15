@@ -262,13 +262,16 @@ Malheureusement, **le moteur acero** a ses limites notamment sur des traitements
     - Que le séquencement des étapes soit **cohérent** avec l'objet du traitement
     - Plus les **données sont volumineuses** OU les **opérations unitaires sont complexes**, plus **les étapes de traitement doivent être courtes/prudentes**
 
-## Notions avancées sur le moteur acero
+## Quelques manques sur le moteur acero (1/2)
+
+<br>
 
 La liste des fonctions du *tidyverse* supportées par acero est disponible [sur cette page](https://arrow.apache.org/docs/dev/r/reference/acero.html).  
 
 Il y a (encore) quelques grands absents, notamment :  
 
 - `pivot_wider()` et `pivot_longer()` n'ont pas d'équivalent avec **acero**. 
+  
 
 - **les empilements de plusieurs tables avec une seule fonction** (`bind_rows()` dans dplyr).  
 Avec des Arrow Tables, il faut appeler plusieurs foirs ces fonctions (en l'occurence `union()`. Par exemple :  
@@ -279,6 +282,10 @@ resultats <- table1 |>
   union(table3) |>
   compute()
 ```
+
+## Quelques manques sur le moteur acero (2/2)
+
+<br>
 
 - les *window functions* (ajouter à une table des informations issues d'une agrégation par groupe) comme par exemple :  
 
@@ -292,15 +299,19 @@ res <- RA2020 |>
 Call collect() first to pull data into R.
 ```
 
-## Comment contourner le problème d'acero ?
+## Comment contourner le problème d'acero ? (1/3)
 
 <br>
 **Plusieurs solutions existent :**  
 
-1. Comme suggéré par R, renoncer à manipuler les données sous forme d'**Arrow Table** avec le moteur acero en passant par un `collect()` et poursuivre le traitement avec le moteur d'exécution de dplyr.  
+1. Comme suggéré par R, renoncer à manipuler les données sous forme d'Arrow Table avec le moteur acero en passant par un `collect()` et poursuivre le traitement avec le moteur d'exécution de dplyr (avec des performances moins importantes).  
 
+
+<br>
 
 2. Étudier le message d’erreur renvoyé par R et chercher à réécrire d'une autre façon le traitement.  
+
+## Comment contourner le problème d'acero ? (2/3)
 
 *Exemple pour le point 2 issu [d'utilitr](https://book.utilitr.org/) :*  
 
@@ -317,6 +328,9 @@ resultats <- bpe_ens_2018_arrow |>
 ```
 
 L’erreur vient de l’opération sum(NB_EQUIP * (TYPEQU == "B203")) : **arrow** ne parvient pas à faire la multiplication entre NB_EQUIP (un nombre réel) et (TYPEQU == "B203") (un booléen).  
+
+## Comment contourner le problème d'acero ? (3/3)
+
 => La solution est très simple: **il suffit de convertir (TYPEQU == "B203") en nombre entier avec la fonction as.integer() qui est supportée par acero**. Le code suivant peut alors être entièrement exécuté par acero:
 
 ```{.r}
