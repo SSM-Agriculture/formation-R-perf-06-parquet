@@ -366,6 +366,24 @@ resultats <- bpe_ens_2018_arrow |>
 
 - **Facilité d’apprentissage grâce aux approches dplyr et SQL**: arrow peut être utilisé avec les verbes de dplyr (select, mutate, etc.) et/ou avec le langage SQL grâce à DuckDB (voir plus loin).
 
+## Exercice 1
+
+::: {.callout-tip icon=false}
+## Exercice 1
+
+- Ouvrir le fichier parquet situé sous `~/CERISE/03-Espace-de-Diffusion/030_Structures_exploitations/3020_Recensements/RA_2020/01_BASES DIFFUSION RA2020/RA_2020_parquet/RA2020_EXPLOITATIONS_240112.parquet`
+- Consulter les métadonnées de ce fichier  
+- Consulter les 100 premières lignes de ce fichier  
+- Récupérer dans un vecteur trié les codes régions des lieux principaux de production (SIEGE_REG)  
+- Récupérer dans un vecteur trié les libellés régions des lieux principaux de production (SIEGE_LIB_REG)  
+
+- Ecrire une fonction calculs_RA() qui - pour une région et une table donnée en entrée - conserve uniquement les lignes correspondantes selon la colonne SIEGE_REG, puis groupe la table par SIEGE_DEP et calcule la surface totale SAU (SAU_TOT), la surface totale de céréales (CEREALES_SUR_TOT) et la surface totale d'oléagineux (OLEAG_SUR_TOT) et enfin la part de la surface des cereales dans la SAU totale et la part de la surface des oléagineux dans la SAU totale.  
+
+- Utilser ensuite la fonction calculs_RA() pour calculer ces indicateurs sur l'ensemble des régions présentes dans la table du RA2020 et stocker les résultats dans des fichiers Excel sous votre espace personnel.  
+*TIPS : pensez à utiliser {purrr} et {openxlsx} par exemple.*
+:::
+
+
 
 
 
