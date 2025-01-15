@@ -341,8 +341,6 @@ L’erreur vient de l’opération sum(NB_EQUIP * (TYPEQU == "B203")) : **arrow*
 
 Le code suivant peut alors être entièrement exécuté par acero:
 
-<br>
-
 ```{.r}
 resultats <- bpe_ens_2018_arrow |>
   group_by(DEP) |>
