@@ -274,7 +274,7 @@ Il y a (encore) quelques grands absents, notamment :
   
 
 - **les empilements de plusieurs tables avec une seule fonction** (`bind_rows()` dans dplyr).  
-Avec des Arrow Tables, il faut appeler plusieurs foirs ces fonctions (en l'occurence `union()`. Par exemple :  
+Avec des Arrow Tables, il faut appeler plusieurs fois ces fonctions (en l'occurence `union()`. Par exemple :  
 
 ```{.r}
 resultats <- table1 |>
