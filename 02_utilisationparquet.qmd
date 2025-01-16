@@ -369,7 +369,7 @@ resultats <- bpe_ens_2018_arrow |>
 ## Exercice 1
 
 ::: {.callout-tip icon=false}
-## Exercice 1
+## Exercice 1 (premiers contacts avec un fichier parquet + rappels sur les fonctions)
 
 - Ouvrir le fichier parquet situé sous `~/CERISE/03-Espace-de-Diffusion/030_Structures_exploitations/3020_Recensements/RA_2020/01_BASES DIFFUSION RA2020/RA_2020_parquet/RA2020_EXPLOITATIONS_240112.parquet`
 - Consulter les métadonnées de ce fichier  
@@ -383,8 +383,62 @@ resultats <- bpe_ens_2018_arrow |>
 *TIPS : pensez à utiliser {purrr} et {openxlsx} par exemple.*
 :::
 
+## Exercice 2
 
+::: {.callout-tip icon=false}
+## Exercice 2 (`collect()` vs `compute()`)
 
+- Dans votre espace de travail, créer les 2 fichiers parquet suivants :  
+
+```{.r}
+data_a <- tibble(
+  id = rep(1:1000000, each = 10),
+  annee = rep(2016:2025, times = 1000000),
+  a = sample(letters, 10000000, replace = TRUE)
+)
+
+data_b <- tibble(
+  id = rep(1:1000000, each = 10),
+  annee = rep(2016:2025, times = 1000000),
+  b = runif(10000000, 1, 100)
+)
+
+data_c <- tibble(
+  lettres = sample(letters, 10000000, replace = TRUE),
+  classe = sample(c("pommes","poires","melon","fraise"), 10000000, replace = TRUE)
+)
+
+write_parquet(data_a, "data_a.parquet")
+write_parquet(data_b, "data_b.parquet")
+write_parquet(data_c, "data_c.parquet")
+
+# Liberation de la mémoire
+rm(data_a)
+rm(data_b)
+rm(data_c)
+gc()
+```
+
+- La suite de l'exercice sur la slide suivante...
+:::
+
+## Exercice 2 (suite)
+
+::: {.callout-tip icon=false}
+## Exercice 2 (`collect()` vs `compute()`)
+
+A) AVEC `collect()`
+- Charger les fichiers parquet `data_a` et `data_b` sous forme de data.frame  
+- Créer la table `etape1` en réalisant une jointure à gauche de `data_a` avec `data_b`.  
+- Charger le fichier parquet `data_c` sous forme de data.frame    
+- Filtrer la table `etape1` sur les années supérieures à 2020 puis faire la somme de
+la colonne `b` selon la colonne `a`  
+- Ajouter le colonne `classe` issue de la table `data_c` dans le tableau final.  
+
+B) AVEC `compute()`  
+- Réaliser les mêmes traitements que A) avec des compute() et réduire le temps d'exécution.
+
+:::
 
 
 
