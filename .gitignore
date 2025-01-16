@@ -16,6 +16,7 @@ _output/
 *.html
 !docs/*.html
 *.tex
+*.tmp
 *.pdf
 *.log
 *.sty
