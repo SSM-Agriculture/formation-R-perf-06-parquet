@@ -267,7 +267,43 @@ WHERE (SIEGE_REG = '93')
 GROUP BY SIEGE_DEP
 ```
 
+## Requêtage avec SQL
+
+Si vous avez des connaissances en SQL, il est bien sûr tout à fait possible 
+de requêter une base DuckDB avec ce langage.  
+La requête est alors passée dans la fonction `DBI::dbGetQuery()` :  
+
+```{.r}
+# On crée une nouvelle connexion
+con <- DBI::dbConnect(drv = duckdb::duckdb())
+
+chemin_donnees <- 'C:/Users/damien.dotta/DEMESIS/Formations_R/Formation_R_perfectionnement/formation-R-perf-06-parquet/data'
+
+# Execution de la requete
+resultatSQL <- DBI::dbGetQuery(
+   con,
+   paste0("SELECT SIEGE_DEP, SUM(SAU_TOT) AS total_SAU
+    FROM '", file.path(chemin_donnees,'RA2020_exploitations.parquet'),"'
+    WHERE (SIEGE_REG = '93')
+    GROUP BY SIEGE_DEP"))
+# resultatSQL est un data.frame directement utilisable dans R
+```
+
+## Options à utiliser
+
+Lors d'une connexion à une base, des paramètres de `dbConnect()` peuvent être très utiles lorsqu'on travaille sur un espace comme Cerise où les ressources sont partagées.  
+Par exemple :  
+
+```{.r}
+con_dbnew <- dbConnect(
+  drv = duckdb::duckdb(),
+  dbdir=db_file,
+  config=list("memory_limit"="10GB", # On définit un plafond de 10Go de RAM
+              threads = "4")) # On plafonne l'utilise par duckdb de 4 coeurs (sur les 30 dispos sur Cerise)
+```
 
 ## Comment accéder aux colonnes dans l'onglet environnement (TODO)
 
-## duckplyr (TODO)
+## Pour aller plus loin : le package duckplyr
+
+To DO ...
