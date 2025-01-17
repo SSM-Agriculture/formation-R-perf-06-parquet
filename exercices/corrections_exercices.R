@@ -2,6 +2,7 @@ library(arrow)
 library(dplyr)
 library(purrr)
 library(openxlsx)
+library(nanoparquet)
 library(tictoc)
 
 #### EXERCICE 1 ####
@@ -13,6 +14,8 @@ RA2020 <- open_dataset("~/CERISE/03-Espace-de-Diffusion/030_Structures_exploitat
 
 # Consulter les métadonnées
 RA2020$schema
+# Ou (avec le package nanoparquet)
+parquet_metadata("data/RA2020_exploitations.parquet")
 
 # Consulter les 100 premières lignes du fichier
 RA2020_extrait <- RA2020 |> slice_head(n = 100) |> collect()
