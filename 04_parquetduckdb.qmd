@@ -47,3 +47,46 @@ Tableau repris de la documentation [utilitr](https://book.utilitr.org/)
 | Utiliser des fonctions fenêtres (voir @sec-arrow)                          | ❌     | ✔️     |
 | Utiliser des fonctions statistiques qui n'existent pas dans arrow (voir @sec-arrow) | ❌     | ✔️     |
 | Écrire un fichier .parquet                                                | ✔️     | ✔️ *   |
+
+## Installation de duckdb
+
+Il suffit d’installer le package duckdb, qui contient à la fois DuckDB et une interface pour que R puisse s’y connecter.
+
+Bonne nouvelle sur la version de Cerise mis à disposition en 2025, le package duckdb sera installé par défaut ! 🎉🎉🎉
+
+
+## Connexions avec duckdb 
+
+Pour utiliser duckdb, il n'est pas nécessaire de connaître le langage SQL car il est possible d'utiliser duckdb avec la syntaxe dplyr.  
+
+duckdb est une base de données distante et s’utilise comme telle: il faut ouvrir une connexion, puis “charger” les données dans la base de données pour les manipuler.
+
+```{.r}
+con <- DBI::dbConnect(drv = duckdb::duckdb())
+```
+
+Plusieurs remarques :  
+
+- Cette commande crée une nouvelle base de données duckdb dans la mémoire vive. 
+
+- Cette base de données ne contient aucune donnée lorsqu’elle est créée. L’objet conn_ddb apparaît dans l’onglet Data de l’environnement RStudio, mais la liste des tables n’y est pas directement accessible
+
+![](img/duckdb_fenetredata.png)
+À la fin du traitement ou du programme, on ferme la connexion avec le code ci-dessous. L’option shutdown est importante : elle permet de fermer complètement la session duckdb et de libérer la mémoire utilisée.
+
+```{.r}
+DBI::dbDisconnect(con, shutdown = TRUE)
+```
+
+## Accéder aux métadonnées d'un fichier parquet avec duckdb
+
+con <- dbConnect(duckdb())
+dbGetQuery(con, "DESCRIBE FROM read_parquet('iris.parquet')")
+
+# Le package nanoparquet permet d'obtenir des infos facilement depuis des fichiers parquet
+parquet_info("iris.parquet")
+parquet_metadata("iris.parquet")
+parquet_schema("iris.parquet")
+parquet_column_types("iris.parquet")
+
+## duckplyr (TODO)
