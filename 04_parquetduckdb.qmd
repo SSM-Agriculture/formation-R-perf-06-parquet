@@ -77,7 +77,7 @@ Plusieurs remarques :
 DBI::dbDisconnect(con, shutdown = TRUE)
 ```
 
-## Chargement de données issues de la session R (1/2)
+## Chargement de données issues de la session R
 
 La fonction `duckdb_register()` permet de charger dans duckdb des données présentes en mémoire dans la session R.  
 
@@ -92,7 +92,7 @@ con |> duckdb::duckdb_register(
   df = RA2020)
 ```
 
-## Chargement de données issues de la session R (2/2)
+## Accéder à une table d'une base DuckDB
 
 Pour vérifier que le chargement des données a bien fonctionné, la fonction `tbl()` permet d'accéder à une table de la base de données grâce à son nom.  
 
