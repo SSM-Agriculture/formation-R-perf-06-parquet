@@ -476,6 +476,61 @@ con_dbnew <- dbConnect(
               threads = "4")) # On plafonne l'utilise par duckdb de 4 coeurs (sur les 30 dispos sur Cerise)
 ```
 
+## Consulter le contenu d'une base
+
+Reprenons la base `BDD_formation.db` créée précédemment.  
+
+::: columns
+
+::: {.column width="50%"}
+```{.r}
+# On crée une nouvelle connexion 
+con <- DBI::dbConnect(drv = duckdb::duckdb(),
+                      dbdir = "data/BDD_formation.db")
+
+# Affichage de la liste des tables
+dbListTables(con)
+# > [1] "resultat_interm"
+```
+
+Ajoutons-y une vue :  
+<br>
+
+```{.r}
+# Création de la vue "RA2020_duckdb"
+con |> duckdb::duckdb_register(
+  name = "RA2020_duckdb", 
+  df = RA2020)
+```
+:::
+
+::: {.column width="50%"}
+```{.r}
+# Affichage de la liste des tables
+dbListTables(con)
+# > [1] "RA2020_duckdb"   "resultat_interm"
+```
+Qu'en est-il vraiment ?
+<br>
+
+```{.r}
+DBI::dbGetQuery(con,"SELECT * FROM INFORMATION_SCHEMA.TABLES")
+# table_catalog table_schema      table_name table_type 
+1 BDD_formation         main resultat_interm BASE TABLE
+2          temp         main   RA2020_duckdb       VIEW
+```
+
+=> Après déconnexion, seule la table "resultat_interm" sera conservée dans la BDD.
+
+```{.r}
+# On se déconnecte
+DBI::dbDisconnect(con, shutdown = TRUE)
+```
+:::
+
+::::
+
+
 ## Pour finir, une comparaison entre {arrow} et {duckdb} (1/2)
 
 Tableau repris de la documentation [utilitr](https://book.utilitr.org/).
@@ -530,8 +585,3 @@ bpe_ens_2022_dataset |>
 :::
 
 ::::
-
-
-## Pour aller plus loin : le package duckplyr
-
-To DO OU PAS (UN AVIS ?)
