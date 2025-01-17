@@ -83,7 +83,7 @@ La fonction `duckdb_register()` permet de charger dans duckdb des données prés
 
 Cette méthode a l’avantage de ne pas recopier les données: elle se contente d’établir un lien logique entre la base de données duckdb et un objet de la session R.  
 
-L’objet créé dans la base est **une vue** dans le catalogue "temp". La durée d’existence de cette vue est le temps de la connexion à la base du fait qu’elle est dans un catalogue "temp".
+L’objet créé dans la base est **une vue** dans le catalogue "temp". La durée d’existence de cette vue est le temps de la connexion.
 
 ```{.r}
 # Création de la vue "RA2020_duckdb"
@@ -211,7 +211,7 @@ En complément des instructions déjà vues dans la partie 2 de la formation, on
 accéder aux métadonnée d'un fichier Parquet en utilisant la requête suivante :  
 
 ```{.r}
-con <- dbConnect(duckdb())
+con <- DBI::dbConnect(drv = duckdb::duckdb())
 dbGetQuery(con, "DESCRIBE FROM read_parquet('data/RA2020_exploitations.parquet')")
 
 # >                 column_name column_type null  key default extra
@@ -221,6 +221,9 @@ dbGetQuery(con, "DESCRIBE FROM read_parquet('data/RA2020_exploitations.parquet')
 4                 CHAMP_GEO     VARCHAR  YES <NA>    <NA>  <NA>
 ...
 ```
+
+Remarque : La fonction dbGetQuery() du package DBI permet de récupérer un data.frame dont le contenu est le résultat d’une requête.  
+
 
 ## Requêtage avec dplyr
 
