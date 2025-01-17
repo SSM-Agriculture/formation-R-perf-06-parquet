@@ -80,12 +80,14 @@ DBI::dbDisconnect(con, shutdown = TRUE)
 
 ## Chargement de données issues de la session R (1/2)
 
-La fonction `duckdb_register()` permet de charger dans duckdb des données présentes dans la session R.  
+La fonction `duckdb_register()` permet de charger dans duckdb des données présentes en mémoire dans la session R.  
 
-Cette méthode a l’avantage de ne pas recopier les données: elle se contente d’établir un lien logique entre la base de données duckdb et un objet de la session R. 
+Cette méthode a l’avantage de ne pas recopier les données: elle se contente d’établir un lien logique entre la base de données duckdb et un objet de la session R.  
+
+L’objet créé dans la base est une vue dans le catalogue "temp". La durée d’existence de cette vue est le temps de la connexion à la base du fait qu’elle est dans un catalogue "temp".
 
 ```{.r}
-# Etablir le lien logique entre la base de données duckdb et la table de données
+# Création de la vue "RA2020_duckdb"
 con |> duckdb::duckdb_register(
   name = "RA2020_duckdb", 
   df = RA2020)
@@ -126,5 +128,10 @@ parquet_info("iris.parquet")
 parquet_metadata("iris.parquet")
 parquet_schema("iris.parquet")
 parquet_column_types("iris.parquet")
+
+
+
+
+## Comment accéder aux colonnes dans l'onglet environnement (TODO)
 
 ## duckplyr (TODO)
