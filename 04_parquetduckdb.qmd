@@ -45,9 +45,12 @@ Bonne nouvelle sur la version de Cerise mis à disposition en 2025, le package d
 
 ## Connexions avec duckdb 
 
-Pour utiliser duckdb, il n'est pas nécessaire de connaître le langage SQL car il est possible d'utiliser duckdb avec la syntaxe dplyr.  
+<br>
 
-duckdb est une base de données distante et s’utilise comme telle: il faut ouvrir une connexion, puis “charger” les données dans la base de données pour les manipuler.
+**Pour utiliser duckdb, il n'est pas nécessaire de connaître le langage SQL car il est possible d'utiliser duckdb avec la syntaxe dplyr.**  
+
+duckdb est une base de données distante et s’utilise comme telle : il faut ouvrir une connexion, puis “charger” les données dans la base de données pour les manipuler.  
+
 
 ```{.r}
 con <- DBI::dbConnect(drv = duckdb::duckdb())
@@ -59,12 +62,21 @@ Plusieurs remarques :
 
 - Cette base de données ne contient aucune donnée lorsqu’elle est créée. L’objet conn_ddb apparaît dans l’onglet Data de l’environnement RStudio, mais la liste des tables n’y est pas directement accessible
 
-![](img/duckdb_fenetredata.png)
+![](img/duckdb_fenetredata.png){fig-align="center"}
+
+## Déconnexion avec duckdb
+
 À la fin du traitement ou du programme, on ferme la connexion avec le code ci-dessous. L’option shutdown est importante : elle permet de fermer complètement la session duckdb et de libérer la mémoire utilisée.
 
 ```{.r}
 DBI::dbDisconnect(con, shutdown = TRUE)
 ```
+
+::: callout-important
+
+Si on n’utilise pas cette option, il arrive souvent que des connexions à moitié ouvertes continuent à consommer des ressources !!!
+
+:::
 
 ## Chargement de données issues de la session R
 
