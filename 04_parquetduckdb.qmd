@@ -6,4 +6,24 @@ editor:
 
 # Manipuler des fichiers parquets avec duckdb {.backgroundTitre}
 
-## En tant que responsable de sources
+## Qu’est-ce que duckdb ?
+
+DuckDB est un projet open-source qui propose un moteur SQL optimisé pour **réaliser des travaux d’analyse statistique sur des bases de données**.  
+
+Plusieurs avantages :  
+
+- Un **moteur portable** utilisable avec **plusieurs langages** (R, Python, Javascript...) et **plusieurs OS** (Windows, Linux, MacOS...)  
+- Une **installation** et une **utilisation** très **facile**  
+
+- Un **moteur SQL** capable d'utiliser des <u>données au format Parquet</u> **sans les charger complètement en mémoire**.  
+
+
+::: callout-note
+
+Il faut bien distinguer le projet DuckDB du package R duckdb qui propose simplement une façon d'utiliser Duckdb avec R.
+
+:::
+
+
+## À quoi sert le package duckdb ?
+
