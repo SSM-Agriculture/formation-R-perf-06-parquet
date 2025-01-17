@@ -78,6 +78,44 @@ Plusieurs remarques :
 DBI::dbDisconnect(con, shutdown = TRUE)
 ```
 
+## Chargement de données issues de la session R (1/2)
+
+La fonction `duckdb_register()` permet de charger dans duckdb des données présentes dans la session R.  
+
+Cette méthode a l’avantage de ne pas recopier les données: elle se contente d’établir un lien logique entre la base de données duckdb et un objet de la session R. 
+
+```{.r}
+# Etablir le lien logique entre la base de données duckdb et la table de données
+con |> duckdb::duckdb_register(
+  name = "RA2020_duckdb", 
+  df = RA2020)
+```
+
+## Chargement de données issues de la session R (2/2)
+
+Pour vérifier que le chargement des données a bien fonctionné, la fonction `tbl()` permet d'accéder à une table de la base de données grâce à son nom.  
+
+```{.r}
+con |> tbl("RA2020_duckdb")
+
+# Source:   table<RA2020_duckdb> [?? x 255]
+# Database: DuckDB v1.1.0 [damien.dotta@Windows 10 x64:R 4.3.0/:memory:]
+   NOM_DOSSIER TYPE_QUESTIONNAIRE SEUIL_IFS CHAMP_GEO COEF_F NUMSTRATE  STRATE     SIEGENAT SIEGE_CODE_COM SIEGE_LIEUDIT      
+   <chr>       <chr>              <chr>     <chr>      <dbl> <chr>      <chr>      <chr>    <chr>          <chr>              
+ 1 1577514     2                  1         1           1.22 2500000004 25000ERICA 10       14406          NA                 
+ 2 1577515     2                  1         1          10.3  2105161843 2105161843 10       51303          NA                 
+ 3 1577516     3                  1         2           1    0101030406 EXH_GEO    10       97407          CHEMIN DES ANGLAIS 
+ 4 1577517     1                  1         1           0    NA         NA         10       57733          NA                 
+ 5 1577524     3                  1         2           1    0101030406 EXH_GEO    32       97420          LA RUE MARCHANDE   
+ 6 1577526     3                  1         2           1    0101030406 EXH_GEO    10       97407          LA RIVIERE DES GAL…
+ 7 1577527     3                  1         2           1    0101030406 EXH_GEO    10       97407          LA RIVIERE DES GAL…
+ 8 1577528     3                  1         2           1    0101030406 EXH_GEO    10       97407          LA RIVIERE DES GAL…
+ 9 1577533     1                  1         1           0    NA         NA         10       28393          CHENE CHENU        
+10 1577534     2                  1         1          12.0  2402815003 2402815003 10       28393          NA                 
+# ℹ more rows
+# ℹ 245 more variables: SIEGE_LIEUDIT_CODE_DOM <chr>, SIEGE_LIB_COM <chr>, SIEGE_DEP <chr>, SIEGE_LIB_DEP <chr>,
+```
+
 ## Accéder aux métadonnées d'un fichier parquet avec duckdb
 
 con <- dbConnect(duckdb())
