@@ -246,6 +246,27 @@ resultat <- RA2020_dataset |>
 DBI::dbDisconnect(con, shutdown = TRUE)
 ```
 
+## Examen de la requête SQL construite par duckdb
+
+Quand on manipule des objets avec duckdb, on construit des requêtes SQL.  
+Le package duckdb se contente de traduire le code dplyr en SQL.  
+La fonction `show_query()` permet de consulter la requête SQL qui a été exécutée par duckdb.  
+
+```{.r}
+# Traitement avec dplyr et un collect()
+resultat <- RA2020_dataset |>
+  filter(SIEGE_REG == "93") |> 
+  group_by(SIEGE_DEP) |> 
+  summarise(total_SAU = sum(SAU_TOT, na.rm = TRUE)) |> 
+  show_query()
+  
+# > <SQL>
+SELECT SIEGE_DEP, SUM(SAU_TOT) AS total_SAU
+FROM "data/RA2020_exploitations.parquet"
+WHERE (SIEGE_REG = '93')
+GROUP BY SIEGE_DEP
+```
+
 
 ## Comment accéder aux colonnes dans l'onglet environnement (TODO)
 
