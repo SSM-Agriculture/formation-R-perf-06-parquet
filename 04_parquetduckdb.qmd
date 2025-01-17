@@ -19,25 +19,28 @@ Plusieurs avantages :
 
 ::: callout-note
 
-Il faut bien distinguer le projet DuckDB du package R duckdb qui propose simplement une façon d'utiliser Duckdb avec R.
+Il faut bien distinguer <u>le projet DuckDB</u> du <u>package R duckdb</u> qui propose simplement une façon d'utiliser Duckdb avec R.
 
 :::
 
 
-## À quoi sert le package duckdb ?
+## À quoi sert le package duckdb + installation ?
 
-Du point de vue d’un statisticien utilisant R, le package duckdb permet de faire trois choses:
+<br>
+
+**Du point de vue d’un statisticien utilisant R, le package duckdb permet de faire trois choses :**
 
 - Importer des données (exemples: fichiers CSV, fichiers Parquet)  
 - Manipuler des données avec la syntaxe dplyr, ou avec le langage SQL  
 - Écrire des données au format Parquet.  
 
 
-## Installation de duckdb
+**Installation de duckdb**
 
-Il suffit d’installer le package duckdb, qui contient à la fois DuckDB et une interface pour que R puisse s’y connecter.
+Il suffit d’installer le package duckdb, qui contient à la fois DuckDB et une interface pour que R puisse s’y connecter.  
 
-Bonne nouvelle sur la version de Cerise mis à disposition en 2025, le package duckdb sera installé par défaut ! 🎉🎉🎉
+
+Bonne nouvelle sur la version de Cerise mis à disposition en 2025, le package duckdb sera installé par défaut ! 🎉
 
 
 ## Connexions avec duckdb 
