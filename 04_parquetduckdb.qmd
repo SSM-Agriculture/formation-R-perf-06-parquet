@@ -184,18 +184,40 @@ DBI::dbDisconnect(con, shutdown = TRUE)
 En effet, lorsqu'on utilise la fonction `tbl()`, celle-ci ne charge pas les données 
 ni dans la mémoire de R ni dans celle de DuckDB.  
 
+## Afficher la liste des colonnes d'une table d'une base Duckdb
+
+La fonction `dbListFields()` est utile pour afficher les noms des colonnes d'une table présente dans une base de données.  
+```{.r}
+# On crée une nouvelle connexion
+con <- DBI::dbConnect(drv = duckdb::duckdb())
+
+con |> duckdb::duckdb_register(
+  name = "iris_duckdb", 
+  df = iris)
+  
+con |> DBI::dbListFields("iris_duckdb")
+# > [1] "Sepal.Length" "Sepal.Width"  "Petal.Length" "Petal.Width"  "Species"     
+
+# On se déconnecte
+DBI::dbDisconnect(con, shutdown = TRUE)
+```
+
 ## Accéder aux métadonnées d'un fichier parquet avec duckdb
 
+En complément des instructions déjà vues dans la partie 2 de la formation, on peut 
+accéder aux métadonnée d'un fichier Parquet en utilisant la requête suivante :  
+
+```{.r}
 con <- dbConnect(duckdb())
-dbGetQuery(con, "DESCRIBE FROM read_parquet('iris.parquet')")
+dbGetQuery(con, "DESCRIBE FROM read_parquet('data/RA2020_exploitations.parquet')")
 
-# Le package nanoparquet permet d'obtenir des infos facilement depuis des fichiers parquet
-parquet_info("iris.parquet")
-parquet_metadata("iris.parquet")
-parquet_schema("iris.parquet")
-parquet_column_types("iris.parquet")
-
-
+# >                 column_name column_type null  key default extra
+1               NOM_DOSSIER     VARCHAR  YES <NA>    <NA>  <NA>
+2        TYPE_QUESTIONNAIRE     VARCHAR  YES <NA>    <NA>  <NA>
+3                 SEUIL_IFS     VARCHAR  YES <NA>    <NA>  <NA>
+4                 CHAMP_GEO     VARCHAR  YES <NA>    <NA>  <NA>
+...
+```
 
 
 ## Comment accéder aux colonnes dans l'onglet environnement (TODO)
