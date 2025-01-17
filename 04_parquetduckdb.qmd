@@ -58,19 +58,25 @@ con <- DBI::dbConnect(drv = duckdb::duckdb())
 
 Plusieurs remarques :  
 
-- Cette commande crée une nouvelle base de données duckdb dans la mémoire vive. 
+- Cette commande crée une nouvelle base de données duckdb **dans la mémoire vive**. 
 
-- Cette base de données ne contient aucune donnée lorsqu’elle est créée. L’objet conn_ddb apparaît dans l’onglet Data de l’environnement RStudio, mais la liste des tables n’y est pas directement accessible
+- Cette base de données ne contient aucune donnée lorsqu’elle est créée. L’objet `con` apparaît dans l’onglet Data de l’environnement RStudio, mais la liste des tables n’y est pas directement accessible
 
 ![](img/duckdb_fenetredata.png){fig-align="center"}
 
 ## Déconnexion avec duckdb
 
-À la fin du traitement ou du programme, on ferme la connexion avec le code ci-dessous. L’option shutdown est importante : elle permet de fermer complètement la session duckdb et de libérer la mémoire utilisée.
+<br>
+
+À la fin du traitement ou du programme, on ferme la connexion avec le code ci-dessous. L’option shutdown est importante : elle permet de fermer complètement la session duckdb et de libérer la mémoire utilisée.  
+
+
 
 ```{.r}
 DBI::dbDisconnect(con, shutdown = TRUE)
 ```
+
+<br>
 
 ::: callout-important
 
@@ -80,11 +86,15 @@ Si on n’utilise pas cette option, il arrive souvent que des connexions à moit
 
 ## Chargement de données issues de la session R
 
-La fonction `duckdb_register()` permet de charger dans duckdb des données présentes en mémoire dans la session R.  
+**La fonction `duckdb_register()` permet de charger dans duckdb des données présentes en mémoire dans la session R.**  
+
+<br>
 
 Cette méthode a l’avantage de ne pas recopier les données: elle se contente d’établir un lien logique entre la base de données duckdb et un objet de la session R.  
 
 L’objet créé dans la base est **une vue** dans le catalogue "temp". La durée d’existence de cette vue est le temps de la connexion.
+
+<br>
 
 ```{.r}
 # Création de la vue "RA2020_duckdb"
@@ -95,7 +105,11 @@ con |> duckdb::duckdb_register(
 
 ## Accéder à une table d'une base DuckDB
 
-Pour vérifier que le chargement des données a bien fonctionné, la fonction `tbl()` permet d'accéder à une table de la base de données grâce à son nom.  
+<br>
+
+Pour vérifier que le chargement des données a bien fonctionné, **la fonction `tbl()` permet d'accéder à une table de la base de données grâce à son nom (entre double quotes).**
+
+<br>
 
 ```{.r}
 con |> tbl("RA2020_duckdb")
@@ -111,7 +125,11 @@ con |> tbl("RA2020_duckdb")
 
 ## Chargement de données sur le disque au format Parquet (1/2)
 
-Comme précedemment la fonction `tbl()` peut être directement utilisée.  
+<br>
+
+Pour charger des données situés sur Cerise par exemple, la fonction `tbl()` peut aussi être directement utilisée en renseignant le chemin du fichier Parquet.  
+
+<br>
 
 ```{.r}
 con %>% tbl("read_parquet('data/RA2020_exploitations.parquet')")
@@ -130,8 +148,12 @@ con %>% tbl('data/RA2020_exploitations.parquet')
 
 ## Chargement de données sur le disque au format Parquet (2/2)
 
+<br>
+
 Avec des fichiers partitionnés, on peut utiliser la syntaxe suivante.  
-`**/*.parquet` est un motif qui indique que vous souhaitez lire, dans tous les sous-dossiers quelque soit le niveau (`**`), l’ensemble des fichiers parquets (`*.parquet`) qui s’y trouvent. 
+`**/*.parquet` est un motif qui indique que vous souhaitez lire, dans tous les sous-dossiers quelque soit le niveau (`**`), l’ensemble des fichiers parquets (`*.parquet`) qui s’y trouvent.  
+
+<br>
 
 ```{.r}
 con %>% tbl('data/msa_ns/**/*.parquet')
@@ -147,7 +169,7 @@ con %>% tbl('data/msa_ns/**/*.parquet')
 
 ## Afficher la liste des tables d'une base Duckdb (1/2)
 
-La fonction `dbListTables()` est utile pour afficher les noms des tables présente dans une base de données.  
+La fonction `dbListTables()` est utile pour afficher les noms des tables présentes dans une base de données.  
 
 Une illustration pour mieux comprendre :  
 
@@ -174,6 +196,8 @@ con %>% tbl("read_parquet('data/RA2020_exploitations.parquet')")
 
 ## Afficher la liste des tables d'une base Duckdb (2/2)
 
+<br>
+
 Réponse... UNE SEULE !
 
 ```{.r}
@@ -185,12 +209,19 @@ dbListTables(con)
 DBI::dbDisconnect(con, shutdown = TRUE)
 ```
 
-En effet, lorsqu'on utilise la fonction `tbl()`, celle-ci ne charge pas les données 
-ni dans la mémoire de R ni dans celle de DuckDB.  
+<br>
+
+**En effet, lorsqu'on utilise la fonction `tbl()`, celle-ci ne charge pas les données 
+ni dans la mémoire de R ni dans celle de DuckDB.**  
 
 ## Afficher la liste des colonnes d'une table d'une base Duckdb
 
-La fonction `dbListFields()` est utile pour afficher les noms des colonnes d'une table présente dans une base de données.  
+<br>
+
+La fonction `dbListFields()` est utile pour afficher les noms des colonnes d'une table présente dans une base de données. 
+
+<br>
+
 ```{.r}
 # On crée une nouvelle connexion
 con <- DBI::dbConnect(drv = duckdb::duckdb())
@@ -208,8 +239,12 @@ DBI::dbDisconnect(con, shutdown = TRUE)
 
 ## Accéder aux métadonnées d'un fichier parquet avec duckdb
 
+<br>
+
 En complément des instructions déjà vues dans la partie 2 de la formation, on peut 
-accéder aux métadonnée d'un fichier Parquet en utilisant la requête suivante :  
+accéder aux métadonnées d'un fichier Parquet en utilisant la requête suivante :  
+
+<br>
 
 ```{.r}
 con <- DBI::dbConnect(drv = duckdb::duckdb())
@@ -223,7 +258,9 @@ dbGetQuery(con, "DESCRIBE FROM read_parquet('data/RA2020_exploitations.parquet')
 ...
 ```
 
-Remarque : La fonction dbGetQuery() du package DBI permet de récupérer un data.frame dont le contenu est le résultat d’une requête.  
+<br>
+
+Remarque : **La fonction dbGetQuery() du package DBI permet de récupérer un data.frame dont le contenu est le résultat d’une requête.**  
 
 
 ## Requêtage avec dplyr
@@ -428,9 +465,6 @@ bpe_ens_2022_dataset |>
  2 09           3               7316
 # ℹ more rows
 ```
-
-
-## Comment accéder aux colonnes dans l'onglet environnement (TODO)
 
 ## Pour aller plus loin : le package duckplyr
 
