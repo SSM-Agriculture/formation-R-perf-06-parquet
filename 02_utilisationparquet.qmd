@@ -252,17 +252,6 @@ parquet_metadata("data/RA2020_exploitations.parquet")
 
 => On obtient des informations sur le schéma, les row_groups, les column chunks...
 
-# Le package nanoparquet permet d'obtenir des infos facilement depuis des fichiers parquet :
-
-```{.r}
-library(nanoparquet)
-
-parquet_info("data/RA2020_exploitations.parquet")
-parquet_metadata("data/RA2020_exploitations.parquet")
-parquet_schema("data/RA2020_exploitations.parquet")
-parquet_column_types("data/RA2020_exploitations.parquet")
-```
-
 ## L'évalutation/éxécution différée (1/4)
 
 <br>
