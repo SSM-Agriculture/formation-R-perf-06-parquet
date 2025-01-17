@@ -269,6 +269,10 @@ Le package R duckdb a été écrit de façon à pouvoir manipuler les données a
 
 Comme avec le package {arrow} on utilise cette syntaxe avec les fonctions `collect()` ou `compute()`.
 
+::: columns
+
+::: {.column width="50%"}
+
 ```{.r}
 # On crée une nouvelle connexion
 con <- DBI::dbConnect(drv = duckdb::duckdb())
@@ -286,12 +290,34 @@ resultat <- RA2020_dataset |>
 # On se déconnecte
 DBI::dbDisconnect(con, shutdown = TRUE)
 ```
+:::
+
+::: {.column width="50%"}
+
+```{.r}
+> resultat
+# A tibble: 6 × 2
+  SIEGE_DEP total_SAU
+  <chr>         <dbl>
+1 84          112888.
+2 05           91979.
+3 04          158946.
+4 13          145713.
+5 83           77785.
+6 06           41141.
+```
+:::
+
+::::
+
 
 ## Examen de la requête SQL construite par duckdb
 
 Quand on manipule des objets avec duckdb, on construit des requêtes SQL.  
 Le package duckdb se contente de traduire le code dplyr en SQL.  
 La fonction `show_query()` permet de consulter la requête SQL qui a été exécutée par duckdb.  
+
+<br>
 
 ```{.r}
 # Traitement avec dplyr et un collect()
@@ -314,6 +340,8 @@ Si vous avez des connaissances en SQL, il est bien sûr tout à fait possible
 de requêter une base DuckDB avec ce langage.  
 La requête est alors passée dans la fonction `DBI::dbGetQuery()` :  
 
+<br>
+
 ```{.r}
 # On crée une nouvelle connexion
 con <- DBI::dbConnect(drv = duckdb::duckdb())
@@ -332,13 +360,16 @@ resultatSQL <- DBI::dbGetQuery(
 
 ## Sauvegarder des résultats intermédiaires - dans des fichiers Parquet
 
-Lorsque le traitement est long, vous devez le découper et stocker quelque part vos résulats 
-intermédiaires de manière à ne pas tout recalculer entièrement à chaque fois.  
+**Lorsque le traitement est long, vous devez le découper et stocker quelque part vos résulats 
+intermédiaires de manière à ne pas tout recalculer entièrement à chaque fois.**  
 
 1. Une 1ère solution consiste à écrire ces résultats intermédiaires dans des fichiers Parquet :
 
+::: columns
+
+::: {.column width="50%"}
 ```{.r}
-# On crée une nouvelle connexion + création d'une BDD vide avec le paramètre dbdir
+# On crée une nouvelle connexion 
 con <- DBI::dbConnect(drv = duckdb::duckdb())
 
 # Etablissement de la connexion au fichier Parquet
@@ -349,10 +380,15 @@ RA2020_dataset |>
   filter(SIEGE_REG == "93") |> 
   arrow::to_arrow() |>          # Conversion dans un format compatible avec arrow
   arrow::write_parquet("data/table_intermediaire.parquet")
-  
+```
+:::
+
+::: {.column width="50%"}
+```{.r}
 # Reprise des traitements + tard avec le moteur SQL de duckdb
 final <- arrow::open_dataset("data/table_intermediaire.parquet") |>
-  arrow::to_duckdb(con) |>  # Conversion dans un format compatible avec duckdb
+  # Conversion dans un format compatible avec duckdb
+  arrow::to_duckdb(con) |>  
   group_by(SIEGE_DEP) |> 
   summarise(total_SAU = sum(SAU_TOT, na.rm = TRUE)) |> 
   collect()
@@ -360,13 +396,21 @@ final <- arrow::open_dataset("data/table_intermediaire.parquet") |>
 # On se déconnecte
 DBI::dbDisconnect(con, shutdown = TRUE)
 ```
+:::
+
+::::
+
 
 ## Sauvegarder des résultats intermédiaires - avec une BDD
 
 2. Une 2ème solution consiste à écrire dans une BDD ces résultats intermédiaires :
 
+::: columns
+
+::: {.column width="50%"}
 ```{.r}
-# On crée une nouvelle connexion + création d'une BDD vide avec le paramètre dbdir
+# On crée une nouvelle connexion 
+# + création d'une BDD vide avec le paramètre dbdir
 con <- DBI::dbConnect(drv = duckdb::duckdb(),
                       dbdir = "data/BDD_formation.db")
 
@@ -376,12 +420,16 @@ RA2020_dataset <- con %>% tbl('data/RA2020_exploitations.parquet')
 # suppression des tables créés
 DBI::dbRemoveTable(con, "resultat_interm")
 
-# Traitement avec dplyr et un collect()
+# Traitement avec dplyr et un compute()
 RA2020_dataset |>
   filter(SIEGE_REG == "93") |> 
   compute(name = "resultat_interm",
           temporary = FALSE)
+```
+:::
 
+::: {.column width="50%"}
+```{.r}
 # Affichage de la liste des tables
 dbListTables(con)
 # [1] "resultat_interm"
@@ -395,12 +443,16 @@ final2 <- con |> tbl("resultat_interm") |>
 # On se déconnecte
 DBI::dbDisconnect(con, shutdown = TRUE)
 ```
+:::
+
+::::
+
 
 ## A retenir sur les 2 méthodes de sauvegarde des résultats intermédiaires
 
 <br>
 
--La première méthode avec **{arrow} et la sauvegarde dans des fichiers Parquet** est généralement **la plus rapide**.  
+- La première méthode avec **{arrow} et la sauvegarde dans des fichiers Parquet** est généralement **la plus rapide**.  
 
 <br>
 
@@ -408,8 +460,13 @@ DBI::dbDisconnect(con, shutdown = TRUE)
 
 ## Options à utiliser
 
+<br>
+
 Lors d'une connexion à une base, des paramètres de `dbConnect()` peuvent être très utiles lorsqu'on travaille sur un espace comme Cerise où les ressources sont partagées.  
+
 Par exemple :  
+
+<br>
 
 ```{.r}
 con_dbnew <- dbConnect(
@@ -431,8 +488,8 @@ Tableau repris de la documentation [utilitr](https://book.utilitr.org/).
 | Utiliser la syntaxe `dplyr` pour traiter mes données                      | ✔️     | ✔️     |
 | Utiliser du langage SQL pour traiter mes données                          | ❌     | ✔️     |
 | Joindre des tables très volumineuses (plus de 4 Go)                          | ❌     | ✔️     |
-| Utiliser des fonctions fenêtres (voir @sec-arrow)                          | ❌     | ✔️     |
-| Utiliser des fonctions statistiques qui n'existent pas dans arrow (voir @sec-arrow) | ❌     | ✔️     |
+| Utiliser des fonctions fenêtres                         | ❌     | ✔️     |
+| Utiliser des fonctions statistiques qui n'existent pas dans arrow        | ❌     | ✔️     |
 | Écrire un fichier .parquet                                                | ✔️     | ✔️     |
 
 ## Pour finir, une comparaison entre {arrow} et {duckdb} (2/2)
@@ -443,19 +500,24 @@ Tableau repris de la documentation [utilitr](https://book.utilitr.org/).
 
 - Le projet duckdb est très récent. Il y a régulièrement des évolutions qui sont souvent des extensions ou des optimisations, et parfois la résolution de bugs. **arrow est un projet plus ancien et plus mature**.  
 
-- La couverture fonctionnelle des fonctions standards de R est meilleure sur {duckdb} que sur {arrow}.  
-Il est préférable d'utiliser {duckdb} pour les jointures de tables volumineuses.  
-De même, les fonctions pivot_wider(), pivot_longer() et les windows_function existent nativement dans duckdb mais pas dans arrow.
+- **La couverture fonctionnelle des fonctions standards de R est meilleure sur {duckdb} que sur {arrow}.**  
+<u>Il est préférable d'utiliser {duckdb} pour les jointures de tables volumineuses.</u>  
+De même, les fonctions pivot_wider(), pivot_longer() et les windows_function existent nativement dans duckdb mais pas dans arrow. Par exemple :
 
-Par exemple, arrow ne peut pas ajouter directement à la base permanente des équipements une colonne égale au nombre total d’équipements du département. Le code fonctionne en duckdb.
+::: columns
 
+::: {.column width="50%"}
 ```{.r}
 # arrow ne peut pas exécuter ceci
 bpe_ens_2022_dataset |>
   group_by(DEP) |>
   mutate(NB_EQUIP_TOTAL_DEP  = sum(NB_EQUIP)) |>
   select(DEP, NB_EQUIP, NB_EQUIP_TOTAL_DEP)
+```
+:::
 
+::: {.column width="50%"}
+```{.r}
 # Source:   SQL [?? x 3]
 # Database: DuckDB v0.9.2 [unknown@Linux 6.5.0-1024-azure:R 4.3.2/:memory:]
 # Groups:   DEP
@@ -465,6 +527,10 @@ bpe_ens_2022_dataset |>
  2 09           3               7316
 # ℹ more rows
 ```
+:::
+
+::::
+
 
 ## Pour aller plus loin : le package duckplyr
 
