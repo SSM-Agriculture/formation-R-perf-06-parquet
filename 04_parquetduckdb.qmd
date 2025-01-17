@@ -114,6 +114,8 @@ Comme précedemment la fonction `tbl()` peut être directement utilisée.
 
 ```{.r}
 con %>% tbl("read_parquet('data/RA2020_exploitations.parquet')")
+# Ou plus succinct (pas besoin de read_parquet() si pas besoin d'y passer des arguments)
+con %>% tbl('data/RA2020_exploitations.parquet')
 
 # Source:   SQL [?? x 255]
 # Database: DuckDB v1.1.0 [damien.dotta@Windows 10 x64:R 4.3.0/:memory:]
@@ -124,13 +126,14 @@ con %>% tbl("read_parquet('data/RA2020_exploitations.parquet')")
  3 CCCCCCC     3                  1         2           1    0101030406 EXH_GEO    10       97407          CHEMIN DES ANGLAIS 
 ```
 
+
 ## Chargement de données sur le disque au format Parquet (2/2)
 
 Avec des fichiers partitionnés, on peut utiliser la syntaxe suivante.  
 `**/*.parquet` est un motif qui indique que vous souhaitez lire, dans tous les sous-dossiers quelque soit le niveau (`**`), l’ensemble des fichiers parquets (`*.parquet`) qui s’y trouvent. 
 
 ```{.r}
-con %>% tbl("read_parquet('data/msa_ns/**/*.parquet')")
+con %>% tbl('data/msa_ns/**/*.parquet')
 
 # Source:   SQL [?? x 293]
 # Database: DuckDB v1.1.0 [damien.dotta@Windows 10 x64:R 4.3.0/:memory:]
@@ -217,6 +220,30 @@ dbGetQuery(con, "DESCRIBE FROM read_parquet('data/RA2020_exploitations.parquet')
 3                 SEUIL_IFS     VARCHAR  YES <NA>    <NA>  <NA>
 4                 CHAMP_GEO     VARCHAR  YES <NA>    <NA>  <NA>
 ...
+```
+
+## Requêtage avec dplyr
+
+Le package R duckdb a été écrit de façon à pouvoir manipuler les données avec la syntaxe de dplyr, c'est très pratique !  
+
+Comme avec le package {arrow} on utilise cette syntaxe avec les fonctions `collect()` ou `compute()`.
+
+```{.r}
+# On crée une nouvelle connexion
+con <- DBI::dbConnect(drv = duckdb::duckdb())
+
+# Etablissement de la connexion au fichier Parquet
+RA2020_dataset <- con %>% tbl('data/RA2020_exploitations.parquet')
+
+# Traitement avec dplyr et un collect()
+resultat <- RA2020_dataset |>
+  filter(SIEGE_REG == "93") |> 
+  group_by(SIEGE_DEP) |> 
+  summarise(total_SAU = sum(SAU_TOT, na.rm = TRUE)) |> 
+  collect()
+
+# On se déconnecte
+DBI::dbDisconnect(con, shutdown = TRUE)
 ```
 
 
