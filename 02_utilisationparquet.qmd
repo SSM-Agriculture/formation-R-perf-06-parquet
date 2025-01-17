@@ -175,7 +175,7 @@ SIEGE_LIB_COM: string
 Pour afficher le contenu d'un **Arrow Table**, il faut d'abord le
 convertir en data.frame avec la fonction `collect()`.
 
-``` r
+```{.r}
 RA2020 <- RA2020 |> collect()
 
 class(RA2020)
@@ -212,6 +212,56 @@ fonction `read_parquet()` pour au moins 2 raisons :
 
 -   `open_dataset()` peut se connecter à un fichier Parquet unique mais
     aussi à des **fichiers Parquets partitionnés** (voir plus loin)
+    
+## Des infos utiles avec le package `{nanoparquet}` (1/2)
+
+# Le package nanoparquet permet d'obtenir des infos facilement depuis des fichiers parquet :
+
+- Des informations générales :  
+
+```{.r}
+library(nanoparquet)
+
+parquet_info("data/RA2020_exploitations.parquet")
+
+# > # A data frame: 1 × 7
+  file_name                         num_cols num_rows num_row_groups file_size parquet_version created_by                     
+  <chr>                                <int>    <dbl>          <int>     <dbl>           <int> <chr>                          
+1 data/RA2020_exploitations.parquet      255   416478              1  39896331               2 parquet-cpp-arrow version 9.0.0
+```
+
+- Les types des colonnes :  
+
+```{.r}
+parquet_column_types("data/RA2020_exploitations.parquet")
+
+# > A data frame: 255 × 6
+   file_name                         name               type       r_type    repetition_type logical_type
+ * <chr>                             <chr>              <chr>      <chr>     <chr>           <I<list>>   
+ 1 data/RA2020_exploitations.parquet NOM_DOSSIER        BYTE_ARRAY character OPTIONAL        <STRING>    
+ 2 data/RA2020_exploitations.parquet TYPE_QUESTIONNAIRE BYTE_ARRAY character OPTIONAL        <STRING>    
+```
+
+## Des infos utiles avec le package `{nanoparquet}` (2/2)
+
+- Pour aller plus loin (par exemple) :  
+
+```{.r}
+parquet_metadata("data/RA2020_exploitations.parquet")
+```
+
+=> On obtient des informations sur le schéma, les row_groups, les column chunks...
+
+# Le package nanoparquet permet d'obtenir des infos facilement depuis des fichiers parquet :
+
+```{.r}
+library(nanoparquet)
+
+parquet_info("data/RA2020_exploitations.parquet")
+parquet_metadata("data/RA2020_exploitations.parquet")
+parquet_schema("data/RA2020_exploitations.parquet")
+parquet_column_types("data/RA2020_exploitations.parquet")
+```
 
 ## L'évalutation/éxécution différée (1/4)
 
