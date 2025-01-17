@@ -292,6 +292,72 @@ resultatSQL <- DBI::dbGetQuery(
 # resultatSQL est un data.frame directement utilisable dans R
 ```
 
+## Sauvegarder des résultats intermédiaires - dans des fichiers Parquet
+
+Lorsque le traitement est long, vous devez le découper et stocker quelque part vos résulats 
+intermédiaires de manière à ne pas tout recalculer entièrement à chaque fois.  
+
+1. Une 1ère solution consiste à écrire ces résultats intermédiaires dans des fichiers Parquet :
+
+```{.r}
+# On crée une nouvelle connexion + création d'une BDD vide avec le paramètre dbdir
+con <- DBI::dbConnect(drv = duckdb::duckdb())
+
+# Etablissement de la connexion au fichier Parquet
+RA2020_dataset <- con %>% tbl('data/RA2020_exploitations.parquet')
+
+# A la fin du traitement, on écrit un fichier parquet intermédiaire 
+RA2020_dataset |>
+  filter(SIEGE_REG == "93") |> 
+  arrow::to_arrow() |>          # Conversion dans un format compatible avec arrow
+  arrow::write_parquet("data/table_intermediaire.parquet")
+  
+# Reprise des traitements + tard avec le moteur SQL de duckdb
+final <- arrow::open_dataset("data/table_intermediaire.parquet") |>
+  arrow::to_duckdb(con) |>  # Conversion dans un format compatible avec duckdb
+  group_by(SIEGE_DEP) |> 
+  summarise(total_SAU = sum(SAU_TOT, na.rm = TRUE)) |> 
+  collect()
+
+# On se déconnecte
+DBI::dbDisconnect(con, shutdown = TRUE)
+```
+
+## Sauvegarder des résultats intermédiaires - avec une BDD
+
+2. Une 2ème solution consiste à écrire dans une BDD ces résultats intermédiaires :
+
+```{.r}
+# On crée une nouvelle connexion + création d'une BDD vide avec le paramètre dbdir
+con <- DBI::dbConnect(drv = duckdb::duckdb(),
+                      dbdir = "data/BDD_formation.db")
+
+# Etablissement de la connexion au fichier Parquet
+RA2020_dataset <- con %>% tbl('data/RA2020_exploitations.parquet')
+
+# suppression des tables créés
+DBI::dbRemoveTable(con, "resultat_interm")
+
+# Traitement avec dplyr et un collect()
+RA2020_dataset |>
+  filter(SIEGE_REG == "93") |> 
+  compute(name = "resultat_interm",
+          temporary = FALSE)
+
+# Affichage de la liste des tables
+dbListTables(con)
+# [1] "resultat_interm"
+
+# Reprise des traitements + tard avec le moteur SQL de duckdb
+final2 <- con |> tbl("resultat_interm") |> 
+  group_by(SIEGE_DEP) |> 
+  summarise(total_SAU = sum(SAU_TOT, na.rm = TRUE)) |> 
+  collect()
+
+# On se déconnecte
+DBI::dbDisconnect(con, shutdown = TRUE)
+```
+
 ## Options à utiliser
 
 Lors d'une connexion à une base, des paramètres de `dbConnect()` peuvent être très utiles lorsqu'on travaille sur un espace comme Cerise où les ressources sont partagées.  
