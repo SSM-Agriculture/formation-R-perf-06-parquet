@@ -358,6 +358,16 @@ final2 <- con |> tbl("resultat_interm") |>
 DBI::dbDisconnect(con, shutdown = TRUE)
 ```
 
+## A retenir sur les 2 méthodes de sauvegarde des résultats intermédiaires
+
+<br>
+
+-La première méthode avec **{arrow} et la sauvegarde dans des fichiers Parquet** est généralement **la plus rapide**.  
+
+<br>
+
+- La seconde avec **compute() et la sauvegarde dans une BDD** est **la plus efficace en terme d’occupation mémoire**.
+
 ## Options à utiliser
 
 Lors d'une connexion à une base, des paramètres de `dbConnect()` peuvent être très utiles lorsqu'on travaille sur un espace comme Cerise où les ressources sont partagées.  
