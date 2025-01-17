@@ -27,3 +27,10 @@ Il faut bien distinguer le projet DuckDB du package R duckdb qui propose simplem
 
 ## À quoi sert le package duckdb ?
 
+Du point de vue d’un statisticien utilisant R, le package duckdb permet de faire trois choses:
+
+- Importer des données (exemples: fichiers CSV, fichiers Parquet)  
+- Manipuler des données avec la syntaxe dplyr, ou avec le langage SQL  
+- Écrire des données au format Parquet.  
+
+
