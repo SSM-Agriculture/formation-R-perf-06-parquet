@@ -475,7 +475,7 @@ resultats <- bpe_ens_2018_arrow |>
 -   Dans votre espace de travail, créer les 2 fichiers parquet suivants
     :
 
-``` r
+```{.r}
 data_a <- tibble(
   id = rep(1:1000000, each = 10),
   annee = rep(2016:2025, times = 1000000),
