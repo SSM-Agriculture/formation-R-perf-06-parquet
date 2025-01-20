@@ -133,6 +133,35 @@ data/msa_ns
         
 ```
 
+## Forcer les types des colonnes lors de l'écriture de fichiers Parquet (1/2)
+
+En tant que responsable de sources par exemple, vous pouvez forcer le typage des colonnes d'un fichier Parquet.  
+Un exemple avec la fonction `arrow_table()` et son argument `schema` :
+
+```{.r}
+#Créez un DataFrame R 
+df <- data.frame( 
+  colonne1 = c(1, 2, 3), 
+  colonne2 = as.character(c("A", "B", "C")), 
+  colonne3 = as.logical(c(TRUE, FALSE, TRUE)) ) 
+
+# Définissez les types de colonnes souhaités 
+schema <- schema(colonne1 = int32(), colonne2 = utf8(), colonne3 = boolean()) 
+
+
+# Cette méthode crée un objet arrow::Table qui vous permet de spécifier explicitement le schéma des données
+table <- arrow_table(df, schema = schema)
+write_parquet(table, "output.parquet")
+```
+
+Les types supportés par arrow sont disponibles [sur cette page](https://arrow.apache.org/docs/r/reference/data-type.html).
+
+## Forcer les types des colonnes lors de l'écriture de fichiers Parquet (2/2)
+
+<br>
+
+
+
 ## Industrialiser la conversion de vos fichiers ?
 
 - Le package R [parquetize](https://ddotta.github.io/parquetize/) permet de faciliter la conversion de données au format Parquet.  
