@@ -133,7 +133,9 @@ data/msa_ns
         
 ```
 
-## Forcer les types des colonnes lors de l'écriture de fichiers Parquet (1/2)
+## Forcer les types des colonnes lors de l'écriture de fichiers Parquet
+
+<br>
 
 En tant que responsable de sources par exemple, vous pouvez forcer le typage des colonnes d'un fichier Parquet.  
 Un exemple avec la fonction `arrow_table()` et son argument `schema` :
@@ -154,13 +156,9 @@ table <- arrow_table(df, schema = schema)
 write_parquet(table, "output.parquet")
 ```
 
-Les types supportés par arrow sont disponibles [sur cette page](https://arrow.apache.org/docs/r/reference/data-type.html).
-
-## Forcer les types des colonnes lors de l'écriture de fichiers Parquet (2/2)
-
 <br>
 
-
+Les types supportés par arrow sont disponibles [sur cette page](https://arrow.apache.org/docs/r/reference/data-type.html).
 
 ## Industrialiser la conversion de vos fichiers ?
 
