@@ -215,7 +215,7 @@ fonction `read_parquet()` pour au moins 2 raisons :
     
 ## Des infos utiles avec le package `{nanoparquet}` (1/2)
 
-# Le package nanoparquet permet d'obtenir des infos facilement depuis des fichiers parquet :
+Le package nanoparquet permet d'obtenir des infos facilement depuis des fichiers parquet :
 
 - Des informations générales :  
 
@@ -230,6 +230,8 @@ parquet_info("data/RA2020_exploitations.parquet")
 1 data/RA2020_exploitations.parquet      255   416478              1  39896331               2 parquet-cpp-arrow version 9.0.0
 ```
 
+## Des infos utiles avec le package `{nanoparquet}` (2/2)
+
 - Les types des colonnes :  
 
 ```{.r}
@@ -241,8 +243,6 @@ parquet_column_types("data/RA2020_exploitations.parquet")
  1 data/RA2020_exploitations.parquet NOM_DOSSIER        BYTE_ARRAY character OPTIONAL        <STRING>    
  2 data/RA2020_exploitations.parquet TYPE_QUESTIONNAIRE BYTE_ARRAY character OPTIONAL        <STRING>    
 ```
-
-## Des infos utiles avec le package `{nanoparquet}` (2/2)
 
 - Pour aller plus loin (par exemple) :  
 
