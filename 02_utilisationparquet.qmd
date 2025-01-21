@@ -18,7 +18,7 @@ library(tictoc)   # Pour le benchmark
 
 <br>
 
-Pour l'exemple, nous allons prendre une table des eploitations du RA
+Pour l'exemple, nous allons prendre une table des exploitations du RA
 2020 d'une centaine de MO qui contient 416 478 lignes et 255 colonnes.
 
 ``` r
@@ -105,7 +105,7 @@ RA2020 <- open_dataset("data/RA2020_exploitations.parquet")  |>
 ```
 
 =\> Avec cette syntaxe, la requête va automatiquement utiliser les
-variables du fichier Parquet dont elle a besoin (en l'occurence
+variables du fichier Parquet dont elle a besoin (en l’occurrence
 SIEGE_REG, SIEGE_DEP et SAU_TOT) et minimiser l'occupation de la mémoire
 vive.
 
@@ -252,7 +252,7 @@ parquet_metadata("data/RA2020_exploitations.parquet")
 
 => On obtient des informations sur le schéma, les row_groups, les column chunks...
 
-## L'évalutation/éxécution différée (1/4)
+## L'évaluation/exécution différée (1/4)
 
 <br>
 
@@ -280,7 +280,7 @@ Table tient au** <u> moteur d'exécution </u> :
 `compute()` pour pouvoir utiliser le plus possible le moteur
 acero.**]{.red}
 
-## L'évalutation/éxécution différée (2/4)
+## L'évaluation/exécution différée (2/4)
 
 ``` r
 SAU_DEP <- RA2020 |> 
@@ -312,7 +312,7 @@ département avant de sommer la SAU les équipements, de façon à ne
 conserver que le minimum de données nécessaires et à ne réaliser que le
 minimum de calculs.]{.small}
 
-## L'évalutation/éxécution différée (3/4)
+## L'évaluation/exécution différée (3/4)
 
 <br>
 
@@ -329,7 +329,7 @@ afin que toutes les opérations soient optimisées en une seule étape.
 Malheureusement, **le moteur acero** a ses limites notamment sur des
 traitements trop complexes (ce qui génère des plantages de sessions R).
 
-## L'évalutation/éxécution différée (4/4)
+## L'évaluation/exécution différée (4/4)
 
 <br>
 
@@ -495,11 +495,11 @@ resultats <- bpe_ens_2018_arrow |>
     selon la colonne SIEGE_REG, puis groupe la table par SIEGE_DEP et
     calcule la surface totale SAU (SAU_TOT), la surface totale de
     céréales (CEREALES_SUR_TOT) et la surface totale d'oléagineux
-    (OLEAG_SUR_TOT) et enfin la part de la surface des cereales dans la
+    (OLEAG_SUR_TOT) et enfin la part de la surface des céréales dans la
     SAU totale et la part de la surface des oléagineux dans la SAU
     totale.
 
--   Utilser ensuite la fonction calculs_RA() pour calculer ces
+-   Utiliser ensuite la fonction calculs_RA() pour calculer ces
     indicateurs sur l'ensemble des régions présentes dans la table du
     RA2020 et stocker les résultats dans des fichiers Excel sous votre
     espace personnel.\

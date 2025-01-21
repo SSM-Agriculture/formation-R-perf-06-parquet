@@ -68,7 +68,7 @@ Plusieurs remarques :
 
 <br>
 
-À la fin du traitement ou du programme, on ferme la connexion avec le code ci-dessous. L’option shutdown est importante : elle permet de fermer complètement la session duckdb et de libérer la mémoire utilisée.  
+À la fin du traitement ou du programme, on ferme la connexion avec le code ci-dessous. L’option `shutdown` est importante : elle permet de fermer complètement la session duckdb et de libérer la mémoire utilisée.  
 
 
 
