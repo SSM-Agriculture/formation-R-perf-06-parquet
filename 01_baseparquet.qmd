@@ -18,22 +18,22 @@
 
 ## Avantages du format Parquet
 
-- **Des fichiers moins volumineux qu’en csv** 
+- **Des fichiers moins volumineux qu'en csv** 
 500 Mo en Parquet vs 5 Go en csv  
 
 - **Des requêtes plus rapides et efficaces**  
 Seulement les données nécessaires sont lues, pas tout le fichier  
 
 - Des données conformes à la mise à disposition par le producteur (par exemple, plus de problème de codes communes…)  
-=> Un format **très efficace pour l’analyse de données** mais **peu adapté à l’ajout de données en continu** ou **à la modification fréquente de données existantes**.  
+=> Un format **très efficace pour l'analyse de données** mais **peu adapté à l'ajout de données en continu** ou **à la modification fréquente de données existantes**.  
 
 ## Un format qui se démocratise
 
-- L’Insee diffuse des données du [recensement de la population](https://www.insee.fr/fr/statistiques/7637890#consulter-sommaire) au format Parquet  
+- L'Insee diffuse des données du [recensement de la population](https://www.insee.fr/fr/statistiques/7637890#consulter-sommaire) au format Parquet  
 
 - Voir [le guide d'utilisation joint](https://ssphub.netlify.app/post/parquetrp/) pour manipuler ces données
 
 - Premières diffusions sur [data.gouv](https://www.data.gouv.fr/fr/) avec les bureaux de vote, les demandes de valeurs foncières, indicateurs pénaux…)  
 
-- Prévisualisations des fichiers Parquet possibles avec le nouvel explorateur de données du SSP Cloud ou avec avec l’outil [ParquetViewer](https://github.com/mukunku/ParquetViewer).
+- Prévisualisations des fichiers Parquet possibles avec le nouvel explorateur de données du SSP Cloud ou avec avec l'outil [ParquetViewer](https://github.com/mukunku/ParquetViewer).
 
