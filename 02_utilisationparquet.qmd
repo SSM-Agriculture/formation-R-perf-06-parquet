@@ -259,7 +259,7 @@ nanoparquet::parquet_column_types("data/output.parquet")
 #   4 test.parquet colonne4 INT32      Date      REQUIRED        <DATE>       
 ```
 
-Attention, Parquet propose 2 niveaux de type :  
+Attention, Parquet propose **2 niveaux de type** :  
 - Le [bas niveau](https://parquet.apache.org/docs/file-format/types/)
 - Le [logical type](https://github.com/apache/parquet-format/blob/master/LogicalTypes.md)
 
