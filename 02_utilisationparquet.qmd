@@ -225,7 +225,7 @@ pouvoir accéder aux métadonnées globales via `$schema$metadata`.
 
 ```{.r}
 # Lire le fichier Parquet en tant qu'Arrow Table avec read_parquet()
-arrow_table <- read_parquet("output.parquet", as_data_frame = FALSE)
+arrow_table <- arrow::read_parquet("output.parquet", as_data_frame = FALSE)
 
 # Accéder aux métadonnées du fichier
 arrow_table$schema$metadata
