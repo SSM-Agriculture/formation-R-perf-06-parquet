@@ -61,9 +61,9 @@ write_parquet(x = dpt2021, sink = "data/dpt2021.parquet"))
 ::: columns
 ::: {.column width="45%"}
 
-Par définition, il n’est pas possible de charger seulement quelques lignes d’un fichier Parquet : **on importe nécessairement des colonnes entières**.  
+Par définition, il n'est pas possible de charger seulement quelques lignes d'un fichier Parquet : **on importe nécessairement des colonnes entières**.  
 
-Lorsque le fichier Parquet est partitionné, **arrow est capable de filtrer les lignes à importer à l’aide de clés departitionnement**, ce qui permet d’accélérer l’importation des données.  
+Lorsque le fichier Parquet est partitionné, **arrow est capable de filtrer les lignes à importer à l'aide de clés departitionnement**, ce qui permet d'accélérer l'importation des données.  
 
 **Le partitionnement permet de travailler sur des fichiers Parquet de plus petite taille et donc de consommer moins de mémoire vive.**
 
@@ -88,7 +88,7 @@ Lorsque le fichier Parquet est partitionné, **arrow est capable de filtrer les 
 <p style="text-align: center;">[Partitionner un fichier revient à le “découper” selon une clé de partionnement (une ou plusieurs variables)]{.Macaron2}</p>
 
 
-En pratique, l’ensemble des données sera stockée dans plusieurs fichiers au format Parquet.
+En pratique, l'ensemble des données sera stockée dans plusieurs fichiers au format Parquet.
 
 Voici par exemple comment se présente un fichier Parquet partitionné selon les régions : 
 
@@ -196,15 +196,15 @@ partitioning = c("Species")
 
 <br>
 
-La fonction `open_dataset()` permet **d’ouvrir une connexion vers un fichier Parquet partitionné**.  
+La fonction `open_dataset()` permet **d'ouvrir une connexion vers un fichier Parquet partitionné**.  
 
-L’utilisation de la fonction `open_dataset()` est **similaire au cas dans lequel on travaille avec un seul fichier Parquet**.
+L'utilisation de la fonction `open_dataset()` est **similaire au cas dans lequel on travaille avec un seul fichier Parquet**.
 
 [Il y a toutefois 2 différences :]{.red}  
 
-- Le chemin indiqué n’est pas celui d’un fichier .parquet, mais <u>le chemin d’un répertoire</u> dans lequel se trouve le
+- Le chemin indiqué n'est pas celui d'un fichier .parquet, mais <u>le chemin d'un répertoire</u> dans lequel se trouve le
 fichier Parquet partitionné
-Il est préférable </u>d’indiquer le nom et le type de la ou des variable(s) de partitionnement</u>.
+Il est préférable </u>d'indiquer le nom et le type de la ou des variable(s) de partitionnement</u>.
 
 ## Comment bien utiliser des fichiers partitionnés avec arrow (2/2)
 
@@ -249,12 +249,12 @@ resultats_msa
 
 Afin de tirer au mieux profit du partitionnement, il est conseillé de **filtrer les données de préférence selon les variables de partitionnement** (dans notre exemple, `TYP_EXP` et `SEXE`).  
 
-Il est fortement recommandé de **spécifier le type des variables de partitionnement avec l’argument
+Il est fortement recommandé de **spécifier le type des variables de partitionnement avec l'argument
 partitioning**.  
 
 Cela évite des erreurs typiques: le code du département est interprété à tort comme un nombre et aboutit à une erreur à cause de la Corse...  
 
-L’argument `partitioning` s’utilise en construisant un schéma qui précise le type de chacune des variables de partitionnement.   
+L'argument `partitioning` s'utilise en construisant un schéma qui précise le type de chacune des variables de partitionnement.   
 
 Voir [cette page](https://arrow.apache.org/docs/r/reference/data-type.html) pour la liste des types supportés.
 

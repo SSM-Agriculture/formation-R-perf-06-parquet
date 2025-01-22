@@ -6,9 +6,9 @@ editor:
 
 # Manipuler des fichiers parquets avec duckdb {.backgroundTitre}
 
-## Qu’est-ce que duckdb ?
+## Qu'est-ce que duckdb ?
 
-DuckDB est un projet open-source qui propose un moteur SQL optimisé pour **réaliser des travaux d’analyse statistique sur des bases de données**.  
+DuckDB est un projet open-source qui propose un moteur SQL optimisé pour **réaliser des travaux d'analyse statistique sur des bases de données**.  
 
 Plusieurs avantages :  
 
@@ -28,7 +28,7 @@ Il faut bien distinguer <u>le projet DuckDB</u> du <u>package R duckdb</u> qui p
 
 <br>
 
-**Du point de vue d’un statisticien utilisant R, le package duckdb permet de faire trois choses :**
+**Du point de vue d'un statisticien utilisant R, le package duckdb permet de faire trois choses :**
 
 - Importer des données (exemples: fichiers CSV, fichiers Parquet)  
 - Manipuler des données avec la syntaxe dplyr, ou avec le langage SQL  
@@ -37,7 +37,7 @@ Il faut bien distinguer <u>le projet DuckDB</u> du <u>package R duckdb</u> qui p
 
 **Installation de duckdb**
 
-Il suffit d’installer le package duckdb, qui contient à la fois DuckDB et une interface pour que R puisse s’y connecter.  
+Il suffit d'installer le package duckdb, qui contient à la fois DuckDB et une interface pour que R puisse s'y connecter.  
 
 
 Bonne nouvelle sur la version de Cerise mis à disposition en 2025, le package duckdb sera installé par défaut ! 🎉
@@ -49,7 +49,7 @@ Bonne nouvelle sur la version de Cerise mis à disposition en 2025, le package d
 
 **Pour utiliser duckdb, il n'est pas nécessaire de connaître le langage SQL car il est possible d'utiliser duckdb avec la syntaxe dplyr.**  
 
-duckdb est une base de données distante et s’utilise comme telle : il faut ouvrir une connexion, puis “charger” les données dans la base de données pour les manipuler.  
+duckdb est une base de données distante et s'utilise comme telle : il faut ouvrir une connexion, puis “charger” les données dans la base de données pour les manipuler.  
 
 
 ```{.r}
@@ -60,7 +60,7 @@ Plusieurs remarques :
 
 - Cette commande crée une nouvelle base de données duckdb **dans la mémoire vive**. 
 
-- Cette base de données ne contient aucune donnée lorsqu’elle est créée. L’objet `con` apparaît dans l’onglet Data de l’environnement RStudio, mais la liste des tables n’y est pas directement accessible
+- Cette base de données ne contient aucune donnée lorsqu'elle est créée. L'objet `con` apparaît dans l'onglet Data de l'environnement RStudio, mais la liste des tables n'y est pas directement accessible
 
 ![](img/duckdb_fenetredata.png){fig-align="center"}
 
@@ -68,7 +68,7 @@ Plusieurs remarques :
 
 <br>
 
-À la fin du traitement ou du programme, on ferme la connexion avec le code ci-dessous. L’option shutdown est importante : elle permet de fermer complètement la session duckdb et de libérer la mémoire utilisée.  
+À la fin du traitement ou du programme, on ferme la connexion avec le code ci-dessous. L'option `shutdown` est importante : elle permet de fermer complètement la session duckdb et de libérer la mémoire utilisée.  
 
 
 
@@ -80,7 +80,7 @@ DBI::dbDisconnect(con, shutdown = TRUE)
 
 ::: callout-important
 
-Si on n’utilise pas cette option, il arrive souvent que des connexions à moitié ouvertes continuent à consommer des ressources !!!
+Si on n'utilise pas cette option, il arrive souvent que des connexions à moitié ouvertes continuent à consommer des ressources !!!
 
 :::
 
@@ -90,9 +90,9 @@ Si on n’utilise pas cette option, il arrive souvent que des connexions à moit
 
 <br>
 
-Cette méthode a l’avantage de ne pas recopier les données: elle se contente d’établir un lien logique entre la base de données duckdb et un objet de la session R.  
+Cette méthode a l'avantage de ne pas recopier les données: elle se contente d'établir un lien logique entre la base de données duckdb et un objet de la session R.  
 
-L’objet créé dans la base est **une vue** dans le catalogue "temp". La durée d’existence de cette vue est le temps de la connexion.
+L'objet créé dans la base est **une vue** dans le catalogue "temp". La durée d'existence de cette vue est le temps de la connexion.
 
 <br>
 
@@ -151,7 +151,7 @@ con %>% tbl('data/RA2020_exploitations.parquet')
 <br>
 
 Avec des fichiers partitionnés, on peut utiliser la syntaxe suivante.  
-`**/*.parquet` est un motif qui indique que vous souhaitez lire, dans tous les sous-dossiers quelque soit le niveau (`**`), l’ensemble des fichiers parquets (`*.parquet`) qui s’y trouvent.  
+`**/*.parquet` est un motif qui indique que vous souhaitez lire, dans tous les sous-dossiers quelque soit le niveau (`**`), l'ensemble des fichiers parquets (`*.parquet`) qui s'y trouvent.  
 
 <br>
 
@@ -260,7 +260,7 @@ dbGetQuery(con, "DESCRIBE FROM read_parquet('data/RA2020_exploitations.parquet')
 
 <br>
 
-Remarque : **La fonction dbGetQuery() du package DBI permet de récupérer un data.frame dont le contenu est le résultat d’une requête.**  
+Remarque : **La fonction dbGetQuery() du package DBI permet de récupérer un data.frame dont le contenu est le résultat d'une requête.**  
 
 
 ## Requêtage avec dplyr
@@ -456,7 +456,7 @@ DBI::dbDisconnect(con, shutdown = TRUE)
 
 <br>
 
-- La seconde avec **compute() et la sauvegarde dans une BDD** est **la plus efficace en terme d’occupation mémoire**.
+- La seconde avec **compute() et la sauvegarde dans une BDD** est **la plus efficace en terme d'occupation mémoire**.
 
 ## Options à utiliser
 
