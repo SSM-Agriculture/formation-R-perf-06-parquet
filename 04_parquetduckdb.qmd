@@ -416,14 +416,14 @@ con <- DBI::dbConnect(drv = duckdb::duckdb(),
 # Etablissement de la connexion au fichier Parquet
 RA2020_dataset <- con %>% tbl('data/RA2020_exploitations.parquet')
 
-# suppression des tables créés
-DBI::dbRemoveTable(con, "resultat_interm")
-
 # Traitement avec dplyr et un compute()
 RA2020_dataset |>
   filter(SIEGE_REG == "93") |> 
   compute(name = "resultat_interm",
           temporary = FALSE)
+          
+# suppression des tables créés
+DBI::dbRemoveTable(con, "resultat_interm")
 ```
 :::
 
