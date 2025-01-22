@@ -140,6 +140,8 @@ data/msa_ns
 En tant que responsable de sources par exemple, vous pouvez forcer le typage des colonnes d'un fichier Parquet.  
 Pour cela, assurez-vous que les colonnes du data.frame R sont au bon type.  
 Si ce n'est pas le cas, utilisez les fonctions de conversion `as.character()`, `as.integer()`, `as.Date()` ...
+  
+<br>
 
 ```{.r}
 #Créez un DataFrame R en spécifiant le type de chaque colonne
@@ -154,14 +156,20 @@ write_parquet(table, "output.parquet")
 ```
 
 <br>
-Une autre façon de forcer le typage des colonnes est d'utiliser un `schema`. Cependant, cela apporte de la complexité au code pas forcément utile. En cas de besoin, un exemple est disponible sur [cette page](https://gist.github.com/ddotta/d3900a8c7d2d247a90de6f8c6a261172).
+Une autre façon de forcer le typage des colonnes est d'utiliser un `schema`. Cependant, cela apporte de la complexité au code pas forcément utile.  
+En cas de besoin, un exemple est disponible sur [cette page](https://gist.github.com/ddotta/d3900a8c7d2d247a90de6f8c6a261172).
 
 ## Ajouter des métadonnées générales sur un fichier Parquet (1/3)
+
+<br>
 
 A partir d'un data.frame R et avant l'écriture du fichier Parquet correspondant, 
 il est possible d'ajouter des métadonnées générales sur un fichier Parquet.
 
-Soit le data.frame suivant :
+<br>
+
+Soit le data.frame suivant :  
+
 
 ```{.r}
 df <- data.frame( 
@@ -172,6 +180,8 @@ df <- data.frame(
 ```
 
 ## Ajouter des métadonnées générales sur un fichier Parquet (2/3)
+
+<br>
 
 Avec uniquement le package {arrow}, on peut ajouter des métadonnées comme ceci :  
 
@@ -191,9 +201,13 @@ write_parquet(df_arrow, "data/output.parquet")
 
 ## Ajouter des métadonnées générales sur un fichier Parquet (3/3)
 
+<br>
+
 Avec le package {nanoparquet}, le code est plus court.  
 Attention ici, la fonction `write_parquet()` utilisée est issue du package {nanoparquet} 
 et non {arrow} (qui ne propose pas l'argument `metadata` et dont les noms des autres arguments sont différents).  
+
+<br>
 
 ```{.r}
 nanoparquet::write_parquet(
