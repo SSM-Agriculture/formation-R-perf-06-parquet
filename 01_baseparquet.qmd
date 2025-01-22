@@ -14,7 +14,27 @@
 -   Un stockage orienté colonne (par opposition aux csv qui sont orientés lignes)\
 -   Un fichier Parquet contient à la fois les données et des métadonnées
 
-![](img/schema_parquet.png)
+```{.r}
+read_parquet("data/output.parquet", as_data_frame = FALSE)$schema
+
+# > Table
+# 3 rows x 4 columns
+# $colonne1 <double not null>
+# $colonne2 <string not null>
+# $colonne3 <bool not null>
+# $colonne4 <date32[day] not null>
+
+read_parquet("data/output.parquet", as_data_frame = FALSE)$schema$metadata
+
+# $auteur
+# [1] "DEMESIS/BQIS"
+
+# $description
+# [1] "Table test de formation"
+
+# $date_creation
+# [1] "2025-01-22"
+```
 
 ## Avantages du format Parquet
 
