@@ -377,7 +377,8 @@ RA2020_dataset <- con %>% tbl('data/RA2020_exploitations.parquet')
 # A la fin du traitement, on écrit un fichier parquet intermédiaire 
 RA2020_dataset |>
   filter(SIEGE_REG == "93") |> 
-  arrow::to_arrow() |>          # Conversion dans un format compatible avec arrow
+  # Conversion dans un format compatible avec arrow
+  arrow::to_arrow() |>          
   arrow::write_parquet("data/table_intermediaire.parquet")
 ```
 :::
