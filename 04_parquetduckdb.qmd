@@ -237,25 +237,24 @@ con |> DBI::dbListFields("iris_duckdb")
 DBI::dbDisconnect(con, shutdown = TRUE)
 ```
 
-## Accéder aux métadonnées d'un fichier parquet avec duckdb
+## Accéder aux logical_types des colonnes d'un fichier parquet avec duckdb
 
 <br>
 
 En complément des instructions déjà vues dans la partie 2 de la formation, on peut 
-accéder aux métadonnées d'un fichier Parquet en utilisant la requête suivante :  
+accéder aux logical_types des colonnes d'un fichier Parquet en utilisant la requête suivante :  
 
 <br>
 
 ```{.r}
 con <- DBI::dbConnect(drv = duckdb::duckdb())
-dbGetQuery(con, "DESCRIBE FROM read_parquet('data/RA2020_exploitations.parquet')")
+dbGetQuery(con, "DESCRIBE FROM read_parquet('data/ouptut.parquet')")
 
-# >                 column_name column_type null  key default extra
-1               NOM_DOSSIER     VARCHAR  YES <NA>    <NA>  <NA>
-2        TYPE_QUESTIONNAIRE     VARCHAR  YES <NA>    <NA>  <NA>
-3                 SEUIL_IFS     VARCHAR  YES <NA>    <NA>  <NA>
-4                 CHAMP_GEO     VARCHAR  YES <NA>    <NA>  <NA>
-...
+# column_name column_type null  key default extra
+# 1    colonne1      DOUBLE  YES <NA>    <NA>  <NA>
+# 2    colonne2     VARCHAR  YES <NA>    <NA>  <NA>
+# 3    colonne3     BOOLEAN  YES <NA>    <NA>  <NA>
+# 4    colonne4        DATE  YES <NA>    <NA>  <NA>
 ```
 
 <br>
