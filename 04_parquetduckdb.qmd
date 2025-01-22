@@ -556,7 +556,7 @@ Tableau repris de la documentation [utilitr](https://book.utilitr.org/).
 
 - **La couverture fonctionnelle des fonctions standards de R est meilleure sur {duckdb} que sur {arrow}.**  
 <u>Il est préférable d'utiliser {duckdb} pour les jointures de tables volumineuses.</u>  
-De même, les fonctions pivot_wider(), pivot_longer() et les windows_function existent nativement dans duckdb mais pas dans arrow. Par exemple :
+De même, les fonctions `pivot_wider()`, `pivot_longer()` et les `windows_function` existent nativement dans duckdb mais pas dans arrow. Par exemple :
 
 ::: columns
 
