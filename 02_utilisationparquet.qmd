@@ -247,7 +247,7 @@ parquet_info("data/RA2020_exploitations.parquet")
 - Les types des colonnes :  
 
 ```{.r}
-parquet_column_types("data/output.parquet")
+nanoparquet::parquet_column_types("data/output.parquet")
 
 # Renvoit :
 # A data frame: 4 × 6
@@ -263,7 +263,7 @@ Attention, Parquet propose 2 niveaux de type :
 - Le [bas niveau](https://parquet.apache.org/docs/file-format/types/)
 - Le [logical type](https://github.com/apache/parquet-format/blob/master/LogicalTypes.md)
 
-**Le package {nanoparquet} retourne les types de bas niveau**.
+La fonction `parquet_column_types()` retourne les types de bas niveau dans la colonne `type` et les types logiques dans la colonne `logical_type`.
 
 - Pour aller plus loin sur les métadonnées :  
 
