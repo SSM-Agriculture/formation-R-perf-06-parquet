@@ -149,8 +149,7 @@ df <- data.frame(
   colonne1 = as.integer(c(1, 2, 3)), 
   colonne2 = as.character(c("A", "B", "C")), 
   colonne3 = as.logical(c(TRUE, FALSE, TRUE)),
-  colonne4 = as.numeric(35.43, 29.93, 17.02)) |> 
-  mutate(colonne4 = as.float64(colonne4))
+  colonne4 = as.numeric(35.43, 29.93, 17.02))
 
 write_parquet(table, "output.parquet")
 ```
