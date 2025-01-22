@@ -138,32 +138,23 @@ data/msa_ns
 <br>
 
 En tant que responsable de sources par exemple, vous pouvez forcer le typage des colonnes d'un fichier Parquet.  
-Un exemple avec la fonction `arrow_table()` et son argument `schema` :
+Pour cela, assurez-vous que les colonnes du data.frame R sont au bon type.  
+Si ce n'est pas le cas, utilisez les fonctions de conversion `as.character()`, `as.integer()`, `as.Date()` ...
 
 ```{.r}
-#Créez un DataFrame R 
+#Créez un DataFrame R en spécifiant le type de chaque colonne
 df <- data.frame( 
-  colonne1 = c(1, 2, 3), 
+  colonne1 = as.integer(c(1, 2, 3)), 
   colonne2 = as.character(c("A", "B", "C")), 
   colonne3 = as.logical(c(TRUE, FALSE, TRUE)),
   colonne4 = as.numeric(35.43, 29.93, 17.02)) |> 
   mutate(colonne4 = as.float64(colonne4))
 
-# Définissez les types de colonnes souhaités 
-schema <- schema(colonne1 = int32(), colonne2 = utf8(), 
-                 colonne3 = boolean(), colonne4 = float64()) 
-
-
-# Cette méthode crée un objet arrow::Table qui vous permet de spécifier explicitement le schéma des données
-table <- arrow_table(df, schema = schema)
 write_parquet(table, "output.parquet")
 ```
 
 <br>
-
-Les types supportés par arrow sont disponibles [sur cette page](https://arrow.apache.org/docs/r/reference/data-type.html).  
-
-Lorsqu'on requête les types d'un fichier Parquet, voici [les réponses possibles](https://parquet.apache.org/docs/file-format/types/).
+Une autre façon de forcer le typage des colonnes est d'utiliser un `schema`. Cependant, cela apporte de la complexité au code pas forcément utile. En cas de besoin, un exemple est disponible sur [cette page](https://gist.github.com/ddotta/d3900a8c7d2d247a90de6f8c6a261172).
 
 ## Industrialiser la conversion de vos fichiers ?
 
