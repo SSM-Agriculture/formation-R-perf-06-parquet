@@ -213,11 +213,23 @@ fonction `read_parquet()` pour au moins 2 raisons :
 -   `open_dataset()` peut se connecter à un fichier Parquet unique mais
     aussi à des **fichiers Parquets partitionnés** (voir plus loin)
     
-## Des infos utiles avec le package `{nanoparquet}` (1/2)
+## Consulter les métadonnées d'un fichier Parquet (1/3)
 
-Le package nanoparquet permet d'obtenir des infos facilement depuis des fichiers parquet :
+Pour obtenir des informations générales sur le fichier (par exemple titre, auteur, date...), 
+il faut utiliser la fonction `read_parquet()` avec l'argument `as_data_frame = FALSE` pour 
+pouvoir accéder aux métadonnées globales via `$schema$metadata`.  
 
-- Des informations générales :  
+```{.r}
+# Lire le fichier Parquet en tant qu'Arrow Table avec read_parquet()
+arrow_table <- read_parquet("output.parquet", as_data_frame = FALSE)
+
+# Accéder aux métadonnées du fichier
+arrow_table$schema$metadata
+```
+
+## Consulter les métadonnées d'un fichier Parquet (2/3)
+
+Le package `{nanoparquet}` permet aussi d'obtenir d'autres infos facilement depuis des fichiers parquet :
 
 ```{.r}
 library(nanoparquet)
@@ -230,21 +242,30 @@ parquet_info("data/RA2020_exploitations.parquet")
 1 data/RA2020_exploitations.parquet      255   416478              1  39896331               2 parquet-cpp-arrow version 9.0.0
 ```
 
-## Des infos utiles avec le package `{nanoparquet}` (2/2)
+## Consulter les métadonnées d'un fichier Parquet (3/3)
 
 - Les types des colonnes :  
 
 ```{.r}
-parquet_column_types("data/RA2020_exploitations.parquet")
+parquet_column_types("data/output.parquet")
 
-# > A data frame: 255 × 6
-   file_name                         name               type       r_type    repetition_type logical_type
- * <chr>                             <chr>              <chr>      <chr>     <chr>           <I<list>>   
- 1 data/RA2020_exploitations.parquet NOM_DOSSIER        BYTE_ARRAY character OPTIONAL        <STRING>    
- 2 data/RA2020_exploitations.parquet TYPE_QUESTIONNAIRE BYTE_ARRAY character OPTIONAL        <STRING>    
+# Renvoit :
+# A data frame: 4 × 6
+# file_name    name     type       r_type    repetition_type logical_type
+# * <chr>        <chr>    <chr>      <chr>     <chr>           <I<list>>   
+#   1 test.parquet colonne1 DOUBLE     double    REQUIRED        <NULL>      
+#   2 test.parquet colonne2 BYTE_ARRAY character REQUIRED        <STRING>    
+#   3 test.parquet colonne3 BOOLEAN    logical   REQUIRED        <NULL>      
+#   4 test.parquet colonne4 INT32      Date      REQUIRED        <DATE>       
 ```
 
-- Pour aller plus loin (par exemple) :  
+Attention, Parquet propose 2 niveaux de type :  
+- Le [bas niveau](https://parquet.apache.org/docs/file-format/types/)
+- Le [logical type](https://github.com/apache/parquet-format/blob/master/LogicalTypes.md)
+
+**Le package {nanoparquet} retourne les types de bas niveau**.
+
+- Pour aller plus loin sur les métadonnées :  
 
 ```{.r}
 parquet_metadata("data/RA2020_exploitations.parquet")
