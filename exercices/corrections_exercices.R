@@ -138,3 +138,34 @@ etape2 <- etape1 |>
 toc()
 
 # > 2.482 sec elapsed
+
+#### EXERCICE 3 ####
+
+library(duckdb)
+
+# On crée une nouvelle connexion
+con <- dbConnect(
+  drv = duckdb::duckdb(),
+  config=list("memory_limit"="10GB", # On définit un plafond de 10Go de RAM
+              threads = "4")) # On plafonne l'utilise par duckdb de 4 coeurs (sur les 30 dispos sur Cerise)
+
+# Etablissement de la connexion au fichier Parquet
+RA2020_dataset <- con %>% tbl("~/CERISE/03-Espace-de-Diffusion/030_Structures_exploitations/3020_Recensements/RA_2020/01_BASES DIFFUSION RA2020/RA_2020_parquet/RA2020_EXPLOITATIONS_240112.parquet")
+
+#' @name exercice3
+#'
+#' @param region chaine de caractères - code région
+exercice3 <- function(region) {
+  RA2020_dataset |> 
+    select(SIEGE_REG, OTEFDA_COEF17, SAU_TOT) |> 
+    filter(SIEGE_REG == region) |> 
+    group_by(OTEFDA_COEF17) |> 
+    summarise("MOY_SAU_{region}" := sum(SAU_TOT, na.rm = TRUE)) |> 
+    collect()
+}
+
+### Traitements
+resultats_exo3 <- c("76","93") |> 
+  map(exercice3) |> 
+  reduce(full_join) |>
+  collect()
