@@ -530,6 +530,23 @@ DBI::dbDisconnect(con, shutdown = TRUE)
 
 ::::
 
+## Exercice 3
+
+::: {.callout-tip icon="false"}
+## Exercice 3 (manipulation avec duckdb)
+
+-   Avec duckdb, se connecter au fichier du RA2020 au format Parquet (cf. exercice 1)
+
+-   Filtrer la table du RA2020 EXPLOITATIONS sur la région de votre choix (SIEGE_REG) puis calculer la moyenne de la SAU (SAU_TOT) en fonction de l'orientation nomenclature agrégée (OTEFDA_COEF17).
+
+-   Réaliser le même traitement que précédemment mais sur une région différente.
+
+-   Fusionner les 2 tables créées aux questions précédentes de manière à avoir une table qui se présente sous la forme suivante :
+
+![](img/exercice3_resultats.png){fig-align="center"}
+<br>
+-   Re-faites l'exercice avec SQL (ou la syntaxe dplyr)
+:::
 
 ## Pour finir, une comparaison entre {arrow} et {duckdb} (1/2)
 
