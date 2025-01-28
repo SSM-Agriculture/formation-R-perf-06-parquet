@@ -530,6 +530,137 @@ DBI::dbDisconnect(con, shutdown = TRUE)
 
 ::::
 
+## Requêter des données Parquet extérieures (data.gouv) avec Cerise et duckdb (1/4)
+
+Un exemple de code pour requêter directement la base Parquet des bureaux de vote directement 
+depuis Cerise !!!  
+
+Configuration générale :  
+
+```{.r}
+# Installation d'une version récente de duckdb
+install.packages("duckdb",
+                 repos = "https://packagemanager.posit.co/cran/__linux__/centos8/latest")
+
+library(duckdb)
+library(glue)
+
+cnx <- dbConnect(duckdb())
+
+# Vérification de la version du package
+dbGetQuery(cnx, "select version()")
+
+# Gestion du proxy avec des var. d'environnement
+dbExecute(cnx, "
+  SET http_proxy='http://rie.proxy.national.agri:8080';
+  SET http_proxy_username='${AGRICOLL_U}';
+  SET http_proxy_password='${AGRICOLL_P}'")
+
+# Installation et chargement de l'extension nécessaire httpfs
+dbExecute(cnx, "INSTALL httpfs")
+dbExecute(cnx, "LOAD httpfs")
+```
+
+Requête :  
+
+```{.r}
+dataset <- "https://static.data.gouv.fr/resources/bureaux-de-vote-et-adresses-de-leurs-electeurs/20230626-135723/table-adresses-reu.parquet"
+
+dbGetQuery(cnx, glue("DESCRIBE FROM '{dataset}'"))
+
+dbDisconnect(cnx, shutdown = TRUE)
+```
+
+## Requêter des données Parquet extérieures (data.gouv) avec Cerise et duckdb (2/4)
+
+Le résultat de la requête :  
+
+<br>
+
+```{.r}
+                   column_name column_type null  key default extra
+1             code_commune_ref     VARCHAR  YES <NA>    <NA>  <NA>
+2  reconstitution_code_commune     VARCHAR  YES <NA>    <NA>  <NA>
+3               id_brut_bv_reu     VARCHAR  YES <NA>    <NA>  <NA>
+4                           id     VARCHAR  YES <NA>    <NA>  <NA>
+5                  geo_adresse     VARCHAR  YES <NA>    <NA>  <NA>
+6                     geo_type     VARCHAR  YES <NA>    <NA>  <NA>
+7                    geo_score      DOUBLE  YES <NA>    <NA>  <NA>
+8                    longitude      DOUBLE  YES <NA>    <NA>  <NA>
+9                     latitude      DOUBLE  YES <NA>    <NA>  <NA>
+10                    api_line     VARCHAR  YES <NA>    <NA>  <NA>
+11               nb_bv_commune    UINTEGER  YES <NA>    <NA>  <NA>
+12                 nb_adresses    UINTEGER  YES <NA>    <NA>  <NA>
+```
+
+## Requêter des données Parquet extérieures (data.gouv) avec Cerise et duckdb (3/4)
+
+Autre exemple pour requêter la table Parquet des unités légales de SIRENE :  
+
+Configuration générale :  
+
+```{.r}
+library(duckdb)
+library(glue)
+
+cnx <- dbConnect(duckdb())
+dbGetQuery(cnx, "select version()")
+
+dbExecute(cnx, "
+  SET http_proxy='http://rie.proxy.national.agri:8080';
+  SET http_proxy_username='${AGRICOLL_U}';
+  SET http_proxy_password='${AGRICOLL_P}'")
+
+dbExecute(cnx, "INSTALL httpfs")
+dbExecute(cnx, "LOAD httpfs")
+```
+
+Requête :  
+
+```{.r}
+dataset <- "https://static.data.gouv.fr/resources/base-sirene-des-entreprises-et-de-leurs-etablissements-siren-siret/20231214-131836/stockunitelegale-utf8.parquet"
+
+req <- glue_sql("
+CREATE TABLE extrait_siren AS
+FROM '{dataset}'
+WHERE SIREN in ('345149587','388467441','390126209','398066613','402405427','412937682','438833196','452474059','489169664','508473261','509821419',
+                 '790465546','852782564','894642347','923272140','947875621','948312806','948407614','948513866','948827449','949061790','949158430','949847420','950824532'
+                 ,'951953637','952069854','952688539','982280463')
+", .con = cnx)
+
+dbSendQuery(cnx, req)
+
+recup_siren <- dbGetQuery(cnx,"
+  SELECT *
+  FROM extrait_siren")
+
+dbDisconnect(cnx, shutdown = TRUE)
+```
+
+## Requêter des données Parquet extérieures (data.gouv) avec Cerise et duckdb (4/4)
+
+Le résultat de la requête : 
+
+<br>
+
+```{.r}
+> recup_siren
+# A tibble: 27 × 34
+   siren     statutDiffusionUniteLeg…¹ unitePurgeeUniteLegale dateCreationUniteLeg…² sigleUniteLegale sexeUniteLegale prenom1UniteLegale prenom2UniteLegale prenom3UniteLegale
+   <chr>     <chr>                     <lgl>                  <date>                 <chr>            <chr>           <chr>              <chr>              <chr>             
+ 1 390126209 O                         TRUE                   1992-09-01             NA               NA              NA                 NA                 NA                
+ 2 923272140 O                         NA                     2023-04-01             NA               NA              NA                 NA                 NA                
+ 3 790465546 O                         NA                     2013-01-01             NA               NA              NA                 NA                 NA                
+# ℹ 24 more rows
+# ℹ abbreviated names: ¹​statutDiffusionUniteLegale, ²​dateCreationUniteLegale
+# ℹ 25 more variables: prenom4UniteLegale <chr>, prenomUsuelUniteLegale <chr>, pseudonymeUniteLegale <chr>, identifiantAssociationUniteLegale <chr>,
+#   trancheEffectifsUniteLegale <chr>, anneeEffectifsUniteLegale <dbl>, dateDernierTraitementUniteLegale <dttm>, nombrePeriodesUniteLegale <dbl>, categorieEntreprise <chr>,
+#   anneeCategorieEntreprise <dbl>, dateDebut <date>, etatAdministratifUniteLegale <chr>, nomUniteLegale <chr>, nomUsageUniteLegale <chr>, denominationUniteLegale <chr>,
+#   denominationUsuelle1UniteLegale <chr>, denominationUsuelle2UniteLegale <chr>, denominationUsuelle3UniteLegale <chr>, categorieJuridiqueUniteLegale <dbl>,
+#   activitePrincipaleUniteLegale <chr>, nomenclatureActivitePrincipaleUniteLegale <chr>, nicSiegeUniteLegale <chr>, economieSocialeSolidaireUniteLegale <chr>, …
+# ℹ Use `print(n = ...)` to see more rows
+```
+
 ## Exercice 3
 
 ::: {.callout-tip icon="false"}
