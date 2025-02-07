@@ -248,7 +248,7 @@ accéder aux logical_types des colonnes d'un fichier Parquet en utilisant la req
 
 ```{.r}
 con <- DBI::dbConnect(drv = duckdb::duckdb())
-dbGetQuery(con, "DESCRIBE FROM read_parquet('data/ouptut.parquet')")
+dbGetQuery(con, "DESCRIBE FROM read_parquet('data/output.parquet')")
 
 # column_name column_type null  key default extra
 # 1    colonne1      DOUBLE  YES <NA>    <NA>  <NA>
@@ -256,6 +256,9 @@ dbGetQuery(con, "DESCRIBE FROM read_parquet('data/ouptut.parquet')")
 # 3    colonne3     BOOLEAN  YES <NA>    <NA>  <NA>
 # 4    colonne4        DATE  YES <NA>    <NA>  <NA>
 ```
+
+La requête suivant est très utile pour accéder aux méta-donnnées d'un fichier Parquet avec duckdb :  
+`dbGetQuery(con, "SELECT * FROM parquet_metadata('data/output.parquet')")`
 
 <br>
 
