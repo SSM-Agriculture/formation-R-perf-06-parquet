@@ -11,7 +11,7 @@ Les corrigés des exercices sont disponibles [sur cette page](https://github.com
 
 ## Contribution
 
-Si vous souhaitez contribuer, n'hésitez pas à nous transmettre des informations. Pour cela, vous pouvez faire [une issue](https://github.com/SSM-Agriculture/formation-git/issues) dans ce dépôt.
+Si vous souhaitez contribuer, n'hésitez pas à nous transmettre des informations. Pour cela, vous pouvez faire [une issue](https://github.com/SSM-Agriculture/formation-R-perf-06-parquet/issues) dans ce dépôt.
 
 
 ## L'export au format Pdf
