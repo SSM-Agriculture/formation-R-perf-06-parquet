@@ -239,8 +239,6 @@ DBI::dbDisconnect(con, shutdown = TRUE)
 
 ## Accéder aux logical_types des colonnes d'un fichier parquet avec duckdb
 
-<br>
-
 En complément des instructions déjà vues dans la partie 2 de la formation, on peut 
 accéder aux logical_types des colonnes d'un fichier Parquet en utilisant la requête suivante :  
 
