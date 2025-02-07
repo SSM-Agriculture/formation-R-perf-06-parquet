@@ -6,7 +6,7 @@ Support de présentation pour la formation dispensée au [MASA](https://agricult
 
 ## Correction des exercices
 
-TO DO
+Les corrigés des exercices sont disponibles [sur cette page](https://github.com/SSM-Agriculture/site-formations-R/wiki).
  
 
 ## Contribution
