@@ -239,6 +239,8 @@ DBI::dbDisconnect(con, shutdown = TRUE)
 
 ## Accéder aux logical_types des colonnes d'un fichier parquet avec duckdb
 
+<br>
+
 En complément des instructions déjà vues dans la partie 2 de la formation, on peut 
 accéder aux logical_types des colonnes d'un fichier Parquet en utilisant la requête suivante :  
 
@@ -256,12 +258,24 @@ dbGetQuery(con, "DESCRIBE FROM read_parquet('data/output.parquet')")
 ```
 
 La requête suivant est très utile pour accéder aux méta-donnnées d'un fichier Parquet avec duckdb :  
-`dbGetQuery(con, "SELECT * FROM parquet_metadata('data/output.parquet')")`
+
 
 <br>
 
 Remarque : **La fonction dbGetQuery() du package DBI permet de récupérer un data.frame dont le contenu est le résultat d'une requête.**  
 
+## Accéder aux métadonnées générales d'un fichier parquet avec duckdb
+
+La fonction `parquet_metadata()` peut également être utilisée dans une requête écrite avec duckdb :
+
+```{.r}
+con <- DBI::dbConnect(drv = duckdb::duckdb())
+dbGetQuery(con, "SELECT * FROM parquet_metadata('data/fr_immp_transactions.parquet')")
+```
+
+![](img/metadata_duckdb_parquet.png){fig-align="center"}
+  
+=> On retrouve des informations très intéressantes sur le mode de compression utilisé lors de l'écriture du fichier Parquet (SNAPPY), des statistiques sur les row groups (min, max), l'encodage...
 
 ## Requêtage avec dplyr
 
