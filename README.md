@@ -1,3 +1,7 @@
+<!-- badges: start -->
+[![render](https://github.com/SSM-Agriculture/formation-R-perf-06-parquet/actions/workflows/publish.yaml/badge.svg)](https://github.com/SSM-Agriculture/formation-R-perf-06-parquet/actions)
+<!-- badges: end -->
+
 # Formation R perfectionnement - Module 6 sur l'utilisation des fichiers parquet
 
 Support de présentation pour la formation dispensée au [MASA](https://agriculture.gouv.fr/).
