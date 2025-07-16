@@ -4,7 +4,7 @@
 
 # Formation R perfectionnement - Module 6 sur l'utilisation des fichiers parquet
 
-Support de présentation pour la formation dispensée au [MASA](https://agriculture.gouv.fr/).
+Support de présentation pour la formation dispensée au [SSM Agriculture](https://agriculture.gouv.fr/).
 
 > Pour un affichage optimisé de la présentation il est conseillé d'utiliser un navigateur basé sur Chromium (par exemple les navigateurs Edge, Chrome, Brave...).
 

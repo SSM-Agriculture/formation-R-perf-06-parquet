@@ -5,7 +5,7 @@ date: today
 date-format: "DD/MM/YYYY"
 author: "SSP/DEMESIS"
 description: |
-  Support de formation R pour le module parquet au MASAF
+  Support de formation R pour le module parquet au SSM Agriculture
 
 slide-tone: false # for blind readers
 chalkboard: false # press the B key to toggle chalkboard

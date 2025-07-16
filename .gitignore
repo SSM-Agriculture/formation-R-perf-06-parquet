@@ -21,3 +21,4 @@ _output/
 *.sty
 *.docx
 *.odt
+/.luarc.json
