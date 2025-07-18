@@ -47,6 +47,30 @@ Seulement les données nécessaires sont lues, pas tout le fichier
 - Des données conformes à la mise à disposition par le producteur (par exemple, plus de problème de codes communes…)  
 => Un format **très efficace pour l'analyse de données** mais **peu adapté à l'ajout de données en continu** ou **à la modification fréquente de données existantes**.  
 
+## Constitution d'un fichier parquet (1/2)
+
+![](img/constitution_parquet.png){fig-align="center"}
+
+*Source : [voir ici](https://luminousmen.com/post/why-parquet-is-the-goto-format-for-data-engineers/)
+
+## Constitution d'un fichier parquet (2/2)
+
+Un fichier Parquet est organisé en `row groups` (groupes de lignes) :
+
+    Chaque `row group` contient l’ensemble des colonnes du jeu de données.
+
+Les données de chaque colonne sont stockées de manière colonnaire au sein du row group :
+
+    Chaque colonne est subdivisée en chunks (morceaux) stockés séquentiellement.
+
+Cette structuration permet :
+
+    - Une lecture sélective efficace (on peut charger uniquement les colonnes nécessaires).
+
+    - Une compression optimisée, car les données similaires sont regroupées.
+
+    - Une excellente performance pour les requêtes analytiques sur de grands volumes.
+
 ## Un format qui se démocratise
 
 - L'Insee diffuse des données du [recensement de la population](https://www.insee.fr/fr/statistiques/7637890#consulter-sommaire) au format Parquet  
