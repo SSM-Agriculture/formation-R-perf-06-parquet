@@ -235,7 +235,7 @@ arrow_table$schema$metadata
 
 <br>
 
-Le package `{nanoparquet}` permet aussi d'obtenir d'autres infos facilement depuis des fichiers parquet :
+Le package [{nanoparquet}](https://nanoparquet.r-lib.org/index.html) permet aussi d'obtenir d'autres infos facilement depuis des fichiers parquet :
   
   
 ```{.r}
@@ -247,6 +247,19 @@ read_parquet_info("data/RA2020_exploitations.parquet")
   file_name                         num_cols num_rows num_row_groups file_size parquet_version created_by                     
   <chr>                                <int>    <dbl>          <int>     <dbl>           <int> <chr>                          
 1 data/RA2020_exploitations.parquet      255   416478              1  39896331               2 parquet-cpp-arrow version 9.0.0
+```
+
+Le package [{parquetize}](https://ddotta.github.io/parquetize/) contient aussi des [fonctions similaires](https://ddotta.github.io/parquetize/reference/get_parquet_info.html) :
+
+```{.r}
+library(parquetize)
+
+get_parquet_info("data/RA2020_exploitations.parquet")
+
+# > # A tibble: 1 × 5
+  path                              num_rows num_row_groups num_columns mean_row_group_size
+  <chr>                                <int>          <int>       <int>               <dbl>
+1 data/RA2020_exploitations.parquet   416478              1         255              416478
 ```
 
 ## Consulter les métadonnées d'un fichier Parquet (3/3)
