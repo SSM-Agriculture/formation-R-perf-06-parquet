@@ -241,7 +241,7 @@ Le package `{nanoparquet}` permet aussi d'obtenir d'autres infos facilement depu
 ```{.r}
 library(nanoparquet)
 
-parquet_info("data/RA2020_exploitations.parquet")
+read_parquet_info("data/RA2020_exploitations.parquet")
 
 # > # A data frame: 1 × 7
   file_name                         num_cols num_rows num_row_groups file_size parquet_version created_by                     
