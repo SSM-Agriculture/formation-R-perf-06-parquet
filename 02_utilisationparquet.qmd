@@ -254,7 +254,7 @@ read_parquet_info("data/RA2020_exploitations.parquet")
 - Les types des colonnes :  
 
 ```{.r}
-nanoparquet::parquet_column_types("data/output.parquet")
+nanoparquet::read_parquet_schema("data/output.parquet")
 
 # A data frame: 4 × 6
 # file_name    name     type       r_type    repetition_type logical_type
