@@ -290,13 +290,13 @@ La fonction `read_parquet_schema()` retourne les types de **bas niveau** dans la
 - Les `logical types` : c'est une interprétation sémantique des données stockées (ils donnent du sens aux types bas niveau).   
   
   
-- Pour aller plus loin sur les métadonnées :  
+**Pour aller plus loin sur les métadonnées d'un fichier :**  
 
 ```{.r}
 parquet_metadata("data/RA2020_exploitations.parquet")
 ```
 
-=> On obtient des informations sur le schéma, les row_groups, les column chunks...
+*=> On obtient des informations sur le schéma, les row_groups, les column chunks...*
 
 ## L'évaluation/exécution différée (1/4)
 
