@@ -286,6 +286,10 @@ Attention, Parquet propose **2 niveaux de type** :
 
 La fonction `read_parquet_schema()` retourne les types de **bas niveau** dans la colonne `type` et les **logical_type** dans la colonne `logical_type`.
 
+- Les types `bas niveau` : c'est la manière dont les données sont stockées physiquement dans le fichier.  
+- Les `logical types` : c'est une interprétation sémantique des données stockées (ils donnent du sens aux types bas niveau).   
+  
+  
 - Pour aller plus loin sur les métadonnées :  
 
 ```{.r}
