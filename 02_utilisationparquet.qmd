@@ -523,10 +523,10 @@ resultats <- bpe_ens_2018_arrow |>
 ::: {.callout-tip icon="false"}
 ## Exercice 1 (premiers contacts avec un fichier parquet + rappels sur les fonctions)
 
--   Consulter les types de colonne de ce fichier\
-
 -   Ouvrir le fichier parquet situé sous
     `~/CERISE/03-Espace-de-Diffusion/030_Structures_exploitations/3020_Recensements/RA_2020/01_BASES DIFFUSION RA2020/RA_2020_parquet/RA2020_EXPLOITATIONS_240112.parquet`
+    
+-   Consulter les types de colonne de ce fichier\
 
 -   Consulter les 100 premières lignes de ce fichier\
 
