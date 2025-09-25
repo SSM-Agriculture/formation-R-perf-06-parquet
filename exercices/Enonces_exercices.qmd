@@ -57,7 +57,7 @@ A)  AVEC `collect()`
 -   Créer la table `etape1` en réalisant une jointure à gauche de `data_a` avec `data_b`.\
 -   Charger le fichier parquet `data_c` sous forme de data.frame\
 -   Filtrer la table `etape1` sur les années supérieures à 2020 puis faire la somme de la colonne `b` selon la colonne `a`\
--   Ajouter le colonne `classe` issue de la table `data_c` dans le tableau final.
+-   Ajouter la colonne `classe` issue de la table `data_c` dans le tableau final.
 
 B)  AVEC `compute()`\
 
