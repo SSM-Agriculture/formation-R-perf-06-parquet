@@ -257,7 +257,7 @@ L'utilisation de la fonction `open_dataset()` est **similaire au cas dans lequel
 [Il y a toutefois 2 différences :]{.red}  
 
 - Le chemin indiqué n'est pas celui d'un fichier .parquet, mais <u>le chemin d'un répertoire</u> dans lequel se trouve le
-fichier Parquet partitionné
+fichier Parquet partitionné.  
 Il est préférable </u>d'indiquer le nom et le type de la ou des variable(s) de partitionnement</u>.
 
 ## Comment bien utiliser des fichiers partitionnés avec arrow (2/2)
