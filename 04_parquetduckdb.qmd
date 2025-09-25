@@ -438,8 +438,6 @@ RA2020_dataset |>
   compute(name = "resultat_interm",
           temporary = FALSE)
           
-# suppression des tables créés
-DBI::dbRemoveTable(con, "resultat_interm")
 ```
 :::
 
