@@ -63,7 +63,7 @@ write_parquet(x = dpt2021, sink = "data/dpt2021.parquet"))
 
 Par définition, il n'est pas possible de charger seulement quelques lignes d'un fichier Parquet : **on importe nécessairement des colonnes entières**.  
 
-Lorsque le fichier Parquet est partitionné, **arrow est capable de filtrer les lignes à importer à l'aide de clés departitionnement**, ce qui permet d'accélérer l'importation des données.  
+Lorsque le fichier Parquet est partitionné, **arrow est capable de filtrer les lignes à importer à l'aide de clés de partitionnement**, ce qui permet d'accélérer l'importation des données.  
 
 **Le partitionnement permet de travailler sur des fichiers Parquet de plus petite taille et donc de consommer moins de mémoire vive.**
 
