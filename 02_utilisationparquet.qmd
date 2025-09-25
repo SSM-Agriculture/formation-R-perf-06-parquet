@@ -557,7 +557,7 @@ resultats <- bpe_ens_2018_arrow |>
 ::: {.callout-tip icon="false"}
 ## Exercice 2 (`collect()` vs `compute()`)
 
--   Dans votre espace de travail, créer les 2 fichiers parquet suivants
+-   Dans votre espace de travail, créer les 3 fichiers parquet suivants
     :
 
 ```{.r}

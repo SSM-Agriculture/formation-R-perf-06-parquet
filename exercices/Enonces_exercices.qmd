@@ -22,7 +22,7 @@ format: html
 
 ## Exercice 2
 
--   Dans votre espace de travail, créer les 2 fichiers parquet suivants :
+-   Dans votre espace de travail, créer les 3 fichiers parquet suivants :
 
 ``` r
 data_a <- tibble(
