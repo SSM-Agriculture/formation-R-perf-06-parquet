@@ -50,7 +50,7 @@ Seulement les données nécessaires sont lues, pas tout le fichier
 ## Constitution d'un fichier parquet
 
 ::: columns
-::: {.column width="45%"}
+::: {.column width="50%"}
 
 ![](img/constitution_parquet.png){fig-align="center"}
 *Source : [voir ici](https://luminousmen.com/post/why-parquet-is-the-goto-format-for-data-engineers/)
@@ -74,6 +74,8 @@ Cette structuration permet :
 
     - Une excellente performance pour les requêtes analytiques sur de grands volumes.
 :::
+
+::::
 
 ## Un format qui se démocratise
 
