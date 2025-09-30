@@ -47,13 +47,16 @@ Seulement les données nécessaires sont lues, pas tout le fichier
 - Des données conformes à la mise à disposition par le producteur (par exemple, plus de problème de codes communes…)  
 => Un format **très efficace pour l'analyse de données** mais **peu adapté à l'ajout de données en continu** ou **à la modification fréquente de données existantes**.  
 
-## Constitution d'un fichier parquet (1/2)
+## Constitution d'un fichier parquet
+
+::: columns
+::: {.column width="45%"}
 
 ![](img/constitution_parquet.png){fig-align="center"}
-
 *Source : [voir ici](https://luminousmen.com/post/why-parquet-is-the-goto-format-for-data-engineers/)
+:::
 
-## Constitution d'un fichier parquet (2/2)
+::: {.column width="50%"}
 
 Un fichier Parquet est organisé en `row groups` (groupes de lignes) :
 
@@ -70,6 +73,7 @@ Cette structuration permet :
     - Une compression optimisée, car les données similaires sont regroupées.
 
     - Une excellente performance pour les requêtes analytiques sur de grands volumes.
+:::
 
 ## Un format qui se démocratise
 
