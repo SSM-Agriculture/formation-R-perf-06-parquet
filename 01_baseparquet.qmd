@@ -57,7 +57,19 @@ Seulement les données nécessaires sont lues, pas tout le fichier
 
 - Prévisualisations des fichiers Parquet possibles avec le nouvel explorateur de données du SSP Cloud ou avec avec l'outil [ParquetViewer](https://github.com/mukunku/ParquetViewer).
 
-## Constitution d'un fichier parquet
+## Constitution d'un fichier parquet (1/3)
+
+Un stockage en mode colonne :
+
+![](img/const_parquet_1.png){fig-align="center"}
+
+## Constitution d'un fichier parquet (2/3)
+
+Pour les gros fichiers, Parquet dispose les données dans des Row Groups.
+
+![](img/const_parquet_2.png){fig-align="center"}
+
+## Constitution d'un fichier parquet (3/3)
 
 ::: columns
 ::: {.column width="50%"}
