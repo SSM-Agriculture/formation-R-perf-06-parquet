@@ -68,7 +68,7 @@ Seulement les données nécessaires sont lues, pas tout le fichier
 
 ::: {.column width="50%"}
 
-Un fichier Parquet est organisé en `row groups` (groupes de lignes) :
+Un fichier Parquet est organisé en `row groups` (groupes de lignes de 128 Mo par défaut) :
 
     Chaque `row group` contient l’ensemble des colonnes du jeu de données.
 
