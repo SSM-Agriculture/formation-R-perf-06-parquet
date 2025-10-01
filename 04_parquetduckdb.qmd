@@ -257,8 +257,6 @@ dbGetQuery(con, "DESCRIBE FROM read_parquet('data/output.parquet')")
 # 4    colonne4        DATE  YES <NA>    <NA>  <NA>
 ```
 
-La requête suivant est très utile pour accéder aux méta-donnnées d'un fichier Parquet avec duckdb :  
-
 
 <br>
 
