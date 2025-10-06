@@ -148,8 +148,7 @@ La fonction `open_dataset()` crée un objet qui apparaît dans Values.
 
 ![](img/vue_values.png){fig-align="center"}
 
-L'affichage dans la console d'un Arrow Table affiche uniquement les
-métadonnées.
+L'affichage dans la console d'un Arrow Table affiche uniquement quelques informations.
 
 ``` r
 RA2020
