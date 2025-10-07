@@ -597,8 +597,7 @@ gc()
 
 A)  AVEC `collect()`
 
-Charger les fichiers parquet `data_a` et `data_b` sous forme de
-data.frame\
+Charger les fichiers parquet `data_a` et `data_b`.  
 Créer la table `etape1` en réalisant une jointure à gauche de `data_a`
 avec `data_b`.\
 Charger le fichier parquet `data_c` sous forme de data.frame\
